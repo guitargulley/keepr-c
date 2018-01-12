@@ -116,9 +116,9 @@
                 keepId: this.activeKeep.id,
                 userId: this.activeKeep.userId
               },
+            keep: this.activeKeep,
             resource: 'vaultkeeps'
           })
-        // this.$store.dispatch('updateKeep', this.activeKeep)
       },
     }
   }

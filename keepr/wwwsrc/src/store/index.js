@@ -143,8 +143,8 @@ var store = new Vuex.Store({
 
         // PUT edits to self-posted listing (for given model type)
 
-        editKeep({ commit, dispatch }, payload) {
-            api.put(`${payload.resource}/${payload.endpoint}`, payload.data)
+        updateKeep({ commit, dispatch }, payload) {
+            api.put(`${payload.resource}/${payload.endpoint}`, payload.keep)
                 .then(res => {
                     dispatch('getKeeps', { resource: payload.resource })
                 })
@@ -194,8 +194,9 @@ var store = new Vuex.Store({
         addToVault({commit, dispatch}, payload){
             api.post(payload.resource, payload.data)
                 .then(res=>{
-                    debugger
-                    console.log(res)
+                    payload.resource = "keeps"
+                    payload.endpoint = payload.keep.id
+                    dispatch('updateKeep', payload)
                 })
                 .catch(err=>{
                     commit('handleError', err)
