@@ -34,7 +34,7 @@ namespace keepr.Controllers
 
         // POST api/values
         [HttpPost]
-        public VaultKeep Post([FromBody]VaultKeep vaultKeep)
+        public String Post([FromBody]VaultKeep vaultKeep)
         {
             return db.Add(vaultKeep);
         }
@@ -51,7 +51,7 @@ namespace keepr.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public string Delete(int id)
+        public String Delete(int id)
         {
             return db.FindByIdAndRemove(id);
         }

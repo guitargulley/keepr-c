@@ -30,18 +30,18 @@ namespace keepr.Repositories
             return _db.QueryFirstOrDefault<VaultKeep>($"SELECT * FROM vaultkeeps WHERE id = {id}", id);
         }
 
-        public VaultKeep Add(VaultKeep vaultkeep)
+        public String Add(VaultKeep vaultkeep)
         {
 
-            int id = _db.ExecuteScalar<int>("INSERT INTO vaultkeeps (UserId, VaultId, KeepID)"
+            var success = _db.ExecuteScalar<int>("INSERT INTO vaultkeeps (UserId, VaultId, KeepID)"
                         + " VALUES(@UserId, @VaultId, @KeepID); SELECT LAST_INSERT_ID()", new
                         {
                             vaultkeep.UserId, 
                             vaultkeep.VaultId,
                             vaultkeep.KeepId,
                         });
-            vaultkeep.Id = id;
-            return vaultkeep;
+            
+            return success > 0 ? "success" : "umm that didnt work";
 
         }
 

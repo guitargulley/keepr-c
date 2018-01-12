@@ -36,17 +36,13 @@ var store = new Vuex.Store({
             console.log('User:', user)
             state.activeUser = user
         },
-        setKeep(state, data){
-            debugger
-            vue.set(state,"activeKeep", data)
-        },
         setKeeps(state, payload){
             console.log('all keeps:', payload)
             state.keeps = payload.data
         },
-        setActiveKeep(state, payload){
-            console.log('Active keep:',payload)
-            vue.set(state, 'activeKeep', payload.data)
+        setActiveKeep(state, data){
+            console.log('Active keep:',data)
+            Vue.set(state, 'activeKeep', data)
         },
         setVaults(state, data){
             state.userVaults = data
@@ -126,7 +122,7 @@ var store = new Vuex.Store({
             api(`${payload.resource}/${payload.id}`)
                 .then(res => {
                     debugger
-                    commit('setKeep', res.data)
+                    commit('setActiveKeep', res.data)
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -190,6 +186,16 @@ var store = new Vuex.Store({
             api.post(payload.resource, payload.data)
                 .then(res =>{
                     dispatch('getVaults', payload)
+                })
+                .catch(err=>{
+                    commit('handleError', err)
+                })
+        },
+        addToVault({commit, dispatch}, payload){
+            api.post(payload.resource, payload.data)
+                .then(res=>{
+                    debugger
+                    console.log(res)
                 })
                 .catch(err=>{
                     commit('handleError', err)

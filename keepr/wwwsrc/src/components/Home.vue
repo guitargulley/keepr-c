@@ -12,9 +12,10 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-xs-6">
+                <h4>Select Vault to add to</h4>
                 <div class="row" v-for="vault in userVaults">
 
-                  <button class="btn btn-primary">{{vault.name}}</button>
+                  <button class="btn btn-primary" @click="addKeepToVault(vault.id)">{{vault.name}}</button>
                 </div>
               </div>
               <div class="col-xs-6">
@@ -104,20 +105,20 @@
         debugger
         this.$store.dispatch('getKeep', {resource: "keeps", id: id})
       },
-      addKeepToVault() {
+      addKeepToVault(id) {
         this.activeKeep.keepcount++
         this.activeKeep.viewed++
-        this.$store.dispatch('addToMyVault',
+        this.$store.dispatch('addToVault',
           {
             data:
               {
-                vaultId: this.activeVault.id,
+                vaultId: id,
                 keepId: this.activeKeep.id,
-                userId: this.activeKeep.userID
+                userId: this.activeKeep.userId
               },
             resource: 'vaultkeeps'
           })
-        this.$store.dispatch('updateKeep', this.activeKeep)
+        // this.$store.dispatch('updateKeep', this.activeKeep)
       },
     }
   }
