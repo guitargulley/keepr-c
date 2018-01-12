@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
-import Keeps from '@/components/Keeps'
+import Keep from '@/components/Keep'
 
 
 Vue.use(Router)
@@ -20,9 +20,9 @@ export default new Router({
       component: Profile
     },
     {
-      path: '/keeps',
-      name: 'Keeps',
-      component: Keeps
+      path: '/keep',
+      name: 'Keep',
+      component: Keep
     }
   ]
 })

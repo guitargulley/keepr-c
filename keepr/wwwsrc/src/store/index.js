@@ -25,6 +25,8 @@ var store = new Vuex.Store({
         activeUser: {},
         keeps:[],
         activeKeep:{},
+        userKeeps:[],
+        userVaults:[]
     },
     mutations: {
         handleError(state, err) {
@@ -34,6 +36,10 @@ var store = new Vuex.Store({
             console.log('User:', user)
             state.activeUser = user
         },
+        setKeep(state, data){
+            debugger
+            vue.set(state,"activeKeep", data)
+        },
         setKeeps(state, payload){
             console.log('all keeps:', payload)
             state.keeps = payload.data
@@ -41,6 +47,12 @@ var store = new Vuex.Store({
         setActiveKeep(state, payload){
             console.log('Active keep:',payload)
             vue.set(state, 'activeKeep', payload.data)
+        },
+        setVaults(state, data){
+            state.userVaults = data
+        },
+        setUserKeeps(state, data){
+            state.userKeeps = data
         }
     },
     actions: {
@@ -48,6 +60,7 @@ var store = new Vuex.Store({
         //LOGIN
 
         login({ commit, dispatch }, payload) {
+            debugger
             auth.post('account/login', payload)
                 .then(res => {
                     console.log("Successful login.")
@@ -109,9 +122,11 @@ var store = new Vuex.Store({
 
         // GET listing at specific id (for given model type)
         getKeep({ commit, dispatch }, payload) {
-            api(`${payload.resource}/${payload.endpoint}`)
+            debugger
+            api(`${payload.resource}/${payload.id}`)
                 .then(res => {
-                    commit('setKeep', { resource: payload.resource, data: res.data })
+                    debugger
+                    commit('setKeep', res.data)
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -119,10 +134,11 @@ var store = new Vuex.Store({
         },
 
         // POST new listing (for given model type)
-        addKeep({ commit, dispatch }, payload) {
+        createKeep({ commit, dispatch }, payload) {
             api.post(`${payload.resource}`, payload.data)
                 .then(res => {
                     dispatch('getKeeps', {resource:payload.resource})
+                    dispatch('getUserKeeps', payload)
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -149,6 +165,33 @@ var store = new Vuex.Store({
                     dispatch('getKeeps', { resource: payload.resource })
                 })
                 .catch(err => {
+                    commit('handleError', err)
+                })
+        },
+        getUserKeeps({commit, dispatch}, payload){
+            api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
+                .then(res=>{
+                    commit('setUserKeeps', res.data)
+                })
+                .catch(err=>{
+                    commit('handleError', err)
+                })
+        },
+        getVaults({commit, dispatch}, payload){
+            api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
+                .then(res=>{
+                    commit('setVaults', res.data)
+                })
+                .catch(err=>{
+                    commit('handleError', err)
+                })
+        },
+        createVault({commit, dispatch}, payload) {
+            api.post(payload.resource, payload.data)
+                .then(res =>{
+                    dispatch('getVaults', payload)
+                })
+                .catch(err=>{
                     commit('handleError', err)
                 })
         }
