@@ -55,7 +55,7 @@ namespace keepr.Repositories
                 UPDATE vaultkeeps SET  
                     UserID = @UserID, 
                     VaultId = @VaultId, 
-                    KeepId = @KeepId, 
+                    KeepId = @KeepId 
                 WHERE Id = {id};
                 SELECT * FROM vaultkeeps WHERE id = {id};", vaultkeep);
         }
