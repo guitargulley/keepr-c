@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
 import Keep from '@/components/Keep'
+import vaults from '@/components/Vaults'
 
 
 Vue.use(Router)
@@ -23,6 +24,11 @@ export default new Router({
       path: '/keep',
       name: 'Keep',
       component: Keep
+    },
+    {
+      path: '/vaults/:id',
+      name: 'vaults',
+      component: vaults
     }
   ]
 })

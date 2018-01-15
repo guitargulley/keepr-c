@@ -19,9 +19,13 @@ namespace keepr.Repositories
         }
 
         // Find One Find Many add update delete
-        public IEnumerable<VaultKeep> GetAll()
+        public IEnumerable<Keep> GetAll(int id)
         {
-            return _db.Query<VaultKeep>("SELECT * FROM vaultkeeps");
+            return _db.Query<Keep>($@"
+            SELECT * FROM vaultkeeps vk
+            INNER JOIN keeps k ON k.id = vk.keepId 
+            WHERE (vaultId = {id})");
+            
         }
 
         public VaultKeep GetById(int id)

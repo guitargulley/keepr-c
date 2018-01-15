@@ -37,7 +37,7 @@
         <div class="col-xs-12">
           <form id="search-keeps" class="form-inline" @submit.prevent="getKeeps">
             <div class="search-form-group">
-              <input type="text" name="text" class="form-control" placeholder="Find an Keep">
+              <input type="text" name="text" class="form-control" placeholder="Find a Keep">
               <button class="btn btn-submit btn-success search-btn" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
@@ -51,15 +51,17 @@
           <h2>{{keep.name}}</h2>
           <img :src="keep.imageUrl" alt="">
           <br>
+          <div v-if="activeUser">
           <button>
             <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
           </button>
-          <button>
-            <i class="fa fa-check fa-2x" @click="setActiveKeep(keep.id)" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
-          </button>
-          <button>
-            <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
-          </button>
+            <button>
+              <i class="fa fa-check fa-2x" @click="setActiveKeep(keep.id)" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
+            </button>
+            <button>
+              <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

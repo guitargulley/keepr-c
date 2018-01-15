@@ -33,11 +33,6 @@
               <button type="button" class="btn btn-default nav-drop-btn" data-toggle="collapse" data-target=".navbar-collapse.in">Profile</button>
             </router-link>
           </li>
-          <li>
-            <router-link :to="{name: 'Keeps'}">
-              <button type="button" class="btn btn-default nav-drop-btn" data-toggle="collapse" data-target=".navbar-collapse.in">Keeps</button>
-            </router-link>
-          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
         </ul>

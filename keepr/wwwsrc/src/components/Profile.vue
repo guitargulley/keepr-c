@@ -74,7 +74,9 @@
 
         <div class="row">
           <div class="col-xs-12" v-for="vault in userVaults">
-            <button>{{vault.name}}</button>
+            <router-link :to="{path: '/vaults/'+ vault.id}">
+              <button @click="setActiveVault(vault.id)">{{vault.name}}</button>
+            </router-link>
           </div>
         </div>
 
@@ -86,11 +88,11 @@
           </button>
         </h1>
         <div class="row">
-            <div class="col-xs-4" v-for ="keep in userKeeps">
-              <h2>{{keep.name}}</h2>
-              <img :src="keep.imageUrl" alt="">
-            </div>
+          <div class="col-xs-4" v-for="keep in userKeeps">
+            <h2>{{keep.name}}</h2>
+            <img :src="keep.imageUrl" alt="">
           </div>
+        </div>
       </div>
     </div>
 
@@ -146,9 +148,9 @@
           data: this.newKeep,
           resource: "keeps"
         })
-        this.newKeep= {
-          name:"",
-          imageurl:""
+        this.newKeep = {
+          name: "",
+          imageurl: ""
         }
       },
       createVault() {
@@ -159,9 +161,15 @@
           resource: "vaults"
         })
         this.newVault = {
-          name:"",
-          description:""
+          name: "",
+          description: ""
         }
+      },
+      setActiveVault(id) {
+        this.$store.dispatch('getActiveVault', {
+          resource: "vaults",
+          endpoint: id
+        })
       }
     }
   }

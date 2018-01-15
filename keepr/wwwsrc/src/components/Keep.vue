@@ -1,5 +1,5 @@
 <template>
-    <div class="autos text-center">
+    <div class="">
         
     </div>
 </template>

@@ -23,10 +23,12 @@ var store = new Vuex.Store({
     state: {
         error: {},
         activeUser: {},
-        keeps:[],
-        activeKeep:{},
-        userKeeps:[],
-        userVaults:[]
+        keeps: [],
+        activeKeep: {},
+        userKeeps: [],
+        userVaults: [],
+        activeVault: {},
+        vaultKeeps: []
     },
     mutations: {
         handleError(state, err) {
@@ -36,19 +38,25 @@ var store = new Vuex.Store({
             console.log('User:', user)
             state.activeUser = user
         },
-        setKeeps(state, payload){
+        setKeeps(state, payload) {
             console.log('all keeps:', payload)
             state.keeps = payload.data
         },
-        setActiveKeep(state, data){
-            console.log('Active keep:',data)
+        setActiveKeep(state, data) {
+            console.log('Active keep:', data)
             Vue.set(state, 'activeKeep', data)
         },
-        setVaults(state, data){
+        setActiveVault(state, data){
+            Vue.set(state, 'activeVault', data)
+        },
+        setVaults(state, data) {
             state.userVaults = data
         },
-        setUserKeeps(state, data){
+        setUserKeeps(state, data) {
             state.userKeeps = data
+        },
+        setVaultKeeps(state, data) {
+            state.vaultKeeps = data
         }
     },
     actions: {
@@ -56,7 +64,7 @@ var store = new Vuex.Store({
         //LOGIN
 
         login({ commit, dispatch }, payload) {
-            debugger
+            
             auth.post('account/login', payload)
                 .then(res => {
                     console.log("Successful login.")
@@ -102,6 +110,7 @@ var store = new Vuex.Store({
 
                     commit('setUser', user)
                     router.push({ name: 'Home' })
+                    dispatch('authenticate')
                 })
         },
 
@@ -133,7 +142,7 @@ var store = new Vuex.Store({
         createKeep({ commit, dispatch }, payload) {
             api.post(`${payload.resource}`, payload.data)
                 .then(res => {
-                    dispatch('getKeeps', {resource:payload.resource})
+                    dispatch('getKeeps', { resource: payload.resource })
                     dispatch('getUserKeeps', payload)
                 })
                 .catch(err => {
@@ -164,44 +173,62 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
-        getUserKeeps({commit, dispatch}, payload){
+        getUserKeeps({ commit, dispatch }, payload) {
             api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
-                .then(res=>{
+                .then(res => {
                     commit('setUserKeeps', res.data)
                 })
-                .catch(err=>{
+                .catch(err => {
                     commit('handleError', err)
                 })
         },
-        getVaults({commit, dispatch}, payload){
+        getVaults({ commit, dispatch }, payload) {
             api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
-                .then(res=>{
+                .then(res => {
                     commit('setVaults', res.data)
                 })
-                .catch(err=>{
+                .catch(err => {
                     commit('handleError', err)
                 })
         },
-        createVault({commit, dispatch}, payload) {
+        createVault({ commit, dispatch }, payload) {
             api.post(payload.resource, payload.data)
-                .then(res =>{
+                .then(res => {
                     dispatch('getVaults', payload)
                 })
-                .catch(err=>{
+                .catch(err => {
                     commit('handleError', err)
                 })
         },
-        addToVault({commit, dispatch}, payload){
+        addToVault({ commit, dispatch }, payload) {
             api.post(payload.resource, payload.data)
-                .then(res=>{
+                .then(res => {
                     payload.resource = "keeps"
                     payload.endpoint = payload.keep.id
                     dispatch('updateKeep', payload)
                 })
-                .catch(err=>{
+                .catch(err => {
                     commit('handleError', err)
                 })
+        },
+        getVaultKeeps({ commit, dispatch }, payload) {
+            debugger
+            api(payload.resource + "/" + payload.endpoint)
+                .then(res => {
+                    commit('setVaultKeeps', res.data)
+                })
+        },
+        getActiveVault({ commit, dispatch }, payload) {
+            
+            api(payload.resource + "/" + payload.endpoint)
+                .then(res => {
+                    commit('setActiveVault', res.data)
+                    payload.resource = "vaultKeeps"
+                    payload.endpoint = res.data.id
+                    dispatch('getVaultKeeps', payload)
+                })
         }
+
 
     }
 })
