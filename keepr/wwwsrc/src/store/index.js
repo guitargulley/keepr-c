@@ -211,6 +211,12 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
+        removeKeep({commit, dispatch}, payload){
+            api.delete(payload.resource + "/vaults/" + payload.endpoint + "/keeps/" + payload.endpoint2)
+                .then(res => {
+                    dispatch('getVaultKeeps')
+                })
+        },
         getVaultKeeps({ commit, dispatch }, payload) {
             debugger
             api(payload.resource + "/" + payload.endpoint)

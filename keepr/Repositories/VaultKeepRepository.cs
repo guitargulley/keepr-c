@@ -60,10 +60,10 @@ namespace keepr.Repositories
                 SELECT * FROM vaultkeeps WHERE id = {id};", vaultkeep);
         }
 
-        public string FindByIdAndRemove(int id)
+        public string FindByIdAndRemove(int vaultId, int id)
         {
             var success = _db.Execute($@"
-                DELETE FROM vaultkeep WHERE Id = {id}
+                DELETE FROM vaultkeeps WHERE vaultId = {vaultId} AND keepId = {id}
             ", id);
             return success > 0 ? "success" : "umm that didnt work";
         }
