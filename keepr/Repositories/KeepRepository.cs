@@ -53,13 +53,13 @@ namespace keepr.Repositories
         public Keep GetOneByIdAndUpdate(int id, Keep keep)
         {
             return _db.QueryFirstOrDefault<Keep>($@"
-                UPDATE keeps SET  
-                    Name = @Name, 
+                UPDATE keeps 
+                SET Name = @Name, 
                     ImageUrl = @ImageUrl, 
                     UserId = @UserId, 
                     KeepCount = @KeepCount, 
-                    Viewed = @Viewed, 
-                WHERE Id = {id};
+                    Viewed = @Viewed 
+                WHERE id = {id};
                 SELECT * FROM keeps WHERE id = {id};", keep);
         }
 

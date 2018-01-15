@@ -29,7 +29,7 @@
                 </router-link>
               </li>
           <li>
-            <router-link :to="{name: 'Profile'}">
+            <router-link :to="{path: 'profile/'+activeUser.id}">
               <button type="button" class="btn btn-default nav-drop-btn" data-toggle="collapse" data-target=".navbar-collapse.in">Profile</button>
             </router-link>
           </li>

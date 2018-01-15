@@ -52,7 +52,7 @@ namespace keepr.Repositories
                     Name = @Name, 
                     Description = @Description, 
                     UserId = @UserId, 
-                WHERE Id = {id};
+                WHERE id = {id};
                 SELECT * FROM vaults WHERE id = {id};", vault);
         }
 

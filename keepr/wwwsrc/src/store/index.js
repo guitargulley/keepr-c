@@ -127,10 +127,8 @@ var store = new Vuex.Store({
 
         // GET listing at specific id (for given model type)
         getKeep({ commit, dispatch }, payload) {
-            debugger
             api(`${payload.resource}/${payload.id}`)
                 .then(res => {
-                    debugger
                     commit('setActiveKeep', res.data)
                 })
                 .catch(err => {
@@ -143,7 +141,7 @@ var store = new Vuex.Store({
             api.post(`${payload.resource}`, payload.data)
                 .then(res => {
                     dispatch('getKeeps', { resource: payload.resource })
-                    dispatch('getUserKeeps', payload)
+                    dispatch('getUserKeeps', {resource: payload.resource, id: payload.user.id})
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -165,16 +163,19 @@ var store = new Vuex.Store({
         // DELETE self-posted listing (for given model type)
 
         deleteKeep({ commit, dispatch }, payload) {
+            
             api.delete(`${payload.resource}/${payload.endpoint}`)
                 .then(res => {
-                    dispatch('getKeeps', { resource: payload.resource })
+                    dispatch('getUserKeeps', { resource: payload.resource, id:payload.id})
+                    
                 })
                 .catch(err => {
                     commit('handleError', err)
                 })
         },
         getUserKeeps({ commit, dispatch }, payload) {
-            api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
+            
+            api(`${payload.resource}/users/${payload.id}`, payload.id)
                 .then(res => {
                     commit('setUserKeeps', res.data)
                 })
@@ -183,7 +184,7 @@ var store = new Vuex.Store({
                 })
         },
         getVaults({ commit, dispatch }, payload) {
-            api(`${payload.resource}/users/${payload.user.id}`, payload.user.id)
+            api(`${payload.resource}/users/${payload.id}`, payload.id)
                 .then(res => {
                     commit('setVaults', res.data)
                 })
@@ -218,7 +219,6 @@ var store = new Vuex.Store({
                 })
         },
         getVaultKeeps({ commit, dispatch }, payload) {
-            debugger
             api(payload.resource + "/" + payload.endpoint)
                 .then(res => {
                     commit('setVaultKeeps', res.data)

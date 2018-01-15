@@ -60,6 +60,30 @@
       </div>
     </div>
     <!-- end of modal -->
+    <!-- VIEW KEEP MODAL -->
+    <div id="keep-view" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Keep Deetz</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>{{activeKeep.name}}</h4>
+                  <img :src="activeKeep.imageUrl" alt="">
+                  <p>Viewed: {{activeKeep.viewed}}---Keeps:{{activeKeep.keepCount}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <h1>WELCOME TO KeepR!</h1>
     <div class="container-fluid">
@@ -77,17 +101,17 @@
       </div>
       <div class="row">
         <div class="col-xs-3" v-for="keep in keeps">
-          <div class="container">
+          <div class="container" @mouseover="hoverHandle(keep.id)">
             <h2 class="title">{{keep.name}}</h2>
             <div class="content">
               <div class="content-overlay"></div>
               <img class="content-image" :src="keep.imageUrl" alt="">
               <div v-if="activeUser" class="content-details fadeIn-bottom">
                 <button class="btn btn-warning">
-                  <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                  <i class="fa fa-eye fa-2x"  @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view" aria-hidden="true"></i>
                 </button>
                 <button class="btn btn-success">
-                  <i class="fa fa-check fa-2x" @click="setActiveKeep(keep.id)" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
+                  <i class="fa fa-check fa-2x" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
                 </button>
                 <button class="btn btn-primary">
                   <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
@@ -95,7 +119,7 @@
               </div>
               <div v-else class="content-details fadeIn-bottom">
                 <button class="btn btn-warning">
-                  <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                  <i class="fa fa-eye fa-2x" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view" aria-hidden="true"></i>
                 </button>
                 <button class="btn btn-success">
                     <i class="fa fa-check fa-2x"  data-toggle="modal" data-target="#login" aria-hidden="true"></i>
@@ -124,8 +148,9 @@
 
     },
     mounted() {
+      this.$store.dispatch('authenticate')
       this.$store.dispatch('getKeeps', { resource: "keeps" })
-      this.$store.dispatch('getVaults', { resource: 'vaults', user: this.activeUser })
+      
     },
     computed: {
       activeUser() {
@@ -154,9 +179,9 @@
           resource: "keeps",
         })
       },
-      setActiveKeep(id) {
-        debugger
+      hoverHandle(id){
         this.$store.dispatch('getKeep', { resource: "keeps", id: id })
+        this.$store.dispatch('getVaults', { resource: 'vaults', id: this.activeUser.id })
       },
       addKeepToVault(id) {
         this.activeKeep.keepcount++
@@ -172,6 +197,19 @@
             keep: this.activeKeep,
             resource: 'vaultkeeps'
           })
+          this.$store.dispatch('updateKeep', {resource: "keeps", endpoint: this.activeKeep.id, keep:this.activeKeep})
+      },
+      updateKeepViews(keep){
+        debugger
+        keep.viewed++
+        var updatedKeep = {
+          name: keep.name,
+          imageUrl: keep.imageUrl,
+          userId: keep.userId,
+          keepCount: keep.keepCount,
+          viewed: keep.viewed
+        }
+        this.$store.dispatch('updateKeep',{resource: "keeps", endpoint:keep.id, keep:updatedKeep})
       },
     }
   }
