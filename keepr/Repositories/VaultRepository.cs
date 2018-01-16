@@ -51,7 +51,7 @@ namespace keepr.Repositories
                 UPDATE vaults SET  
                     Name = @Name, 
                     Description = @Description, 
-                    UserId = @UserId, 
+                    UserId = @UserId
                 WHERE id = {id};
                 SELECT * FROM vaults WHERE id = {id};", vault);
         }

@@ -31,6 +31,35 @@
       </div>
     </div>
     <!-- end of modal -->
+    <div id="add-to-vault" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">KeepIt</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <h4>Select Vault to add to</h4>
+                  <div class="row" v-for="vault in userVaults">
+  
+                    <button class="btn btn-primary" style="width:80%; margin-bottom:3px"@click="addKeepToVault(vault.id)" data-dismiss="modal">{{vault.name}}</button>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-6 ">
+                  <h4>{{activeKeep.name}}</h4>
+                  <img :src="activeKeep.imageUrl" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <!--NEW KEEP MODAL -->
     <div id="new-keep" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -51,6 +80,9 @@
                 <input type="text" name="imageurl" maxlength="255" class="form-control" placeholder="imageurl" required v-model='newKeep.imageUrl'>
               </div>
               <div class="form-group">
+                  <label><input type="checkbox" value="true" required v-model='newKeep.public'>MAKE PUBLIC</label>
+                </div>
+              <div class="form-group">
                 <button class="btn btn-submit btn-success" @click="createKeep" data-dismiss="modal" type="submit">Submit</button>
               </div>
             </form>
@@ -61,6 +93,30 @@
         </div>
       </div>
     </div>
+    <!-- DELETE KEEP MODAL -->
+    <div id="delete-keep" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">{{activeKeep.name}}</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                    <h4>Are you sure you want to delete {{activeKeep.name}}?</h4>
+                    <h6>Once Deleted you will not be able to retrieve this vault again.</h6>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger pull-left" @click="deleteKeep" data-dismiss="modal">DELETE IT</button>
+              <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <!-- EDIT KEEP MODAL -->
     <div id="edit-keep" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -81,10 +137,11 @@
                   <textarea type="text" name="imageurl" maxlength="255" class="form-control" placeholder="imageurl" required v-model='newKeep.imageUrl'>{{newKeep.imageUrl}}</textarea>
                 </div>
                 <div class="form-group">
-                  <button class="btn btn-submit btn-success" @click="editKeep" data-dismiss="modal" type="submit">Save Changes</button>
-                </div>
+                    <label><input type="checkbox" value="true" required v-model='newKeep.public'>MAKE PUBLIC</label>
+                  </div>
                 <div class="form-group">
-                    <button class="btn btn-submit btn-danger" @click="deleteKeep(activeKeep.id)" data-dismiss="modal" type="submit">Delete Keep</button>
+                  <button class="btn btn-submit btn-success" @click="editKeep" data-dismiss="modal" type="submit">Save Changes</button>
+                  <button class="btn btn-submit btn-danger" @click="deleteKeep(activeKeep.id)" data-dismiss="modal" type="submit">Delete Keep</button>
                   </div>
               </form>
             </div>
@@ -95,10 +152,51 @@
         </div>
       </div>
     <!-- end of modal -->
+    <div id="keep-view" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Keep Deetz</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-6">
+                  <h4>{{activeKeep.name}}</h4>
+                  <img :src="activeKeep.imageUrl" alt="">
+                </div>
+                <div class="col-xs-6">
+                  <div class="row" style="margin-top: 7rem">
+                    <div class="col-xs-2">
+                        <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
+                      </div>
+                      <div class="col-xs-10">
+                        <h4 class="text-left">Viewed: {{activeKeep.viewed}}</h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-2">
+                        <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
+                      </div>
+                      <div class="col-xs-10">
+                        <h4 class="text-left">Keeps:{{activeKeep.keepCount}}</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success pull-left" data-toggle="modal" data-target="#add-to-vault" data-dismiss="modal"><i class="fa fa-check" aria-hidden="true"></i>Keep It</button>
+              <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <h1>{{activeUser.username}}</h1>
     <div class="row">
-      <div class="col-xs-6">
-        <h1>Your Vaults
+      <div class="col-xs-12">
+        <h1>YOUR VAULTS
           <button class="btn btn-success">
             <i class="fa fa-plus fa-2x" aria-hidden="true" data-toggle="modal" data-target="#new-vault"></i>
           </button>
@@ -108,34 +206,34 @@
         <div class="row">
           <div class="col-xs-12" v-for="vault in userVaults">
             <router-link :to="{path: '/vaults/'+ vault.id}">
-              <button @click="setActiveVault(vault.id)">{{vault.name}}</button>
+              <button class="btn btn-primary btn-lg"style="width:100%; margin: 2px"@click="setActiveVault(vault.id)">{{vault.name}}</button>
             </router-link>
           </div>
         </div>
 
       </div>
-      <div class="col-xs-6">
-        <h1>Your Keeps
+      <div class="col-xs-12">
+        <h1>YOUR KEEPS
           <button class="btn btn-success">
             <i class="fa fa-plus fa-2x" aria-hidden="true" data-toggle="modal" data-target="#new-keep"></i>
           </button>
         </h1>
         <div class="row">
-          <div class="col-xs-4" v-for="keep in userKeeps">
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 well" v-for="keep in userKeeps">
               <div class="container">
                   <h2 class="title">{{keep.name}}</h2>
                   <div class="content">
                       <div class="content-overlay"></div>
                       <img class="content-image" :src="keep.imageUrl" alt="">
                       <div class="content-details fadeIn-bottom">
-                          <button class="btn btn-warning"  @click="setActiveKeep(keep)"data-toggle="modal" data-target="#edit-keep">
-                              <i class="fa fa-pencil"   aria-hidden="true"></i>
+                          <button class="btn btn-warning"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#edit-keep">
+                              <i class="fa fa-pencil"  title="Edit Keep" aria-hidden="true"></i>
                           </button>
-                          <button class="btn btn-danger" @click="deleteKeep(keep.id)">
+                          <button class="btn btn-danger"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#delete-keep"title="Delete Keep">
                               <i class="fa fa-minus" aria-hidden="true"></i>
                           </button>
                           <button class="btn btn-primary">
-                              <i class="fa fa-eye" aria-hidden="true"></i>
+                              <i class="fa fa-eye" title="View Keep"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
                           </button>
                       </div>
                   </div>
@@ -159,7 +257,8 @@
         },
         newKeep: {
           name: '',
-          imageUrl: ''
+          imageUrl: '',
+          public: false,
         }
 
       }
@@ -210,6 +309,22 @@
           description: ""
         }
       },
+      addKeepToVault(id) {
+        this.activeKeep.keepCount++
+        this.activeKeep.viewed++
+        this.$store.dispatch('addToVault',
+          {
+            data:
+              {
+                vaultId: id,
+                keepId: this.activeKeep.id,
+                userId: this.activeKeep.userId
+              },
+            keep: this.activeKeep,
+            resource: 'vaultkeeps'
+          })
+          this.$store.dispatch('updateKeep', {resource: "keeps", endpoint: this.activeKeep.id, keep:this.activeKeep})
+      },
       setActiveVault(id) {
         this.$store.dispatch('getActiveVault', {
           resource: "vaults",
@@ -217,7 +332,6 @@
         })
       },
       setActiveKeep(keep){
-        debugger
         this.$store.dispatch('getKeep', { resource: "keeps", id: keep.id })
         this.newKeep = keep
       },
@@ -228,8 +342,8 @@
         this.newKeep.viewed = this.activeKeep.viewed
         this.$store.dispatch('updateKeep', {resource:"keeps", endpoint:this.newKeep.id, keep: this.newKeep})
       },
-      deleteKeep(id){
-        this.$store.dispatch('deleteKeep', {resource:"keeps", endpoint:id, id:this.activeUser.id})
+      deleteKeep(){
+        this.$store.dispatch('deleteKeep', {resource:"keeps", endpoint:this.activeKeep.id, id:this.activeUser.id})
       }
     }
   }

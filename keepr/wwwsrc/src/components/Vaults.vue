@@ -1,12 +1,77 @@
 <template>
     <div class="vault">
+        <!-- DELETE VAULT MODAL -->
+        <div id="delete-vault" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{activeVault.name}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Are you sure you want to delete {{activeVault.name}}?</h4>
+                                <h6>Once Deleted you will not be able to retrieve this vault again.</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger pull-left" @click="deleteVault" data-dismiss="modal">DELETE IT</button>
+                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- END OF MODAL -->
+        <div id="edit-vault" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit Vault</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="login" class="form">
+                            <div class="form-group">
+                                <label for="name">Name of Vault:</label>
+                                <textarea type="text" maxlength="255" name="name" class="form-control" placeholder="Name of Vault" required v-model='vault.name'>{{vault.name}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Vault Description:</label>
+                                <textarea type="text" name="description" maxlength="255" class="form-control" placeholder="description" required v-model='vault.description'>{{vault.description}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-submit btn-success" @click="editVault" data-dismiss="modal" type="submit">Save Changes</button>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-submit btn-danger" @click="deleteKeep(activeKeep.id)" data-dismiss="modal" type="submit">Delete Keep</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of modal -->
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-1 text-right">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#delete-vault">DELETE VAULT</button>
+            </div>
+            <div class="col-xs-1 col-xs-offset-1 pull right">
+                <button class="btn btn-warning" @mouseover="getActiveVault" data-toggle="modal" data-target="#edit-vault">EDIT VAULT</button>
+            </div>
+            <div class="col-xs-11 text-center">
                 <h1>{{activeVault.name}}</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-3" v-for="keep in vaultKeeps">
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" v-for="keep in vaultKeeps">
                 <div class="container">
                     <h2 class="title">{{keep.name}}</h2>
                     <div class="content">
@@ -14,13 +79,13 @@
                         <img class="content-image" :src="keep.imageUrl" alt="">
                         <div class="content-details fadeIn-bottom">
                             <button class="btn btn-warning">
-                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                <i class="fa fa-eye fa-2x" title="View Keep" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-danger" @click="removeKeep(keep.id)">
+                            <button class="btn btn-danger" title="Remove from Vault" @click="removeKeep(keep.id)">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
                             </button>
                             <button class="btn btn-primary">
-                                <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
+                                <i class="fa fa-share-alt fa-2x" title="Share Keep" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -37,10 +102,16 @@
         name: 'vaults',
         data() {
             return {
-
+                vault:{
+                    name:"",
+                    description:""
+                }
             }
         },
         computed: {
+            activeUser() {
+                return this.$store.state.activeUser
+            },
             activeVault() {
                 return this.$store.state.activeVault
             },
@@ -75,9 +146,34 @@
             },
             deleteVault() {
                 this.$store.dispatch('deleteVault', {
-                    resource: "vault",
-                    endpoint: this.activeVault.id
+                    resource: "vaults",
+                    endpoint: this.activeVault.id,
+                    activeUser: this.activeUser.id
                 })
+            },
+            editVault(){
+                var editedVault={
+                    name:this.vault.name,
+                    description: this.vault.description,
+                    userId: this.activeUser.id
+                }
+                this.$store.dispatch('editVault', {
+                    resource: "vaults",
+                    endpoint: this.activeVault.id,
+                    activeuser: this.activeUser.id,
+                    vault: editedVault
+
+                })
+            },
+            getActiveVault(){
+                this.$store.dispatch('getActiveVault',{
+                    resource: "vaults",
+                    endpoint: this.$route.params.id
+                })
+                this.vault={
+                    name: this.activeVault.name,
+                    description: this.activeVault.description
+                }
             }
         }
     }

@@ -159,6 +159,15 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
+        editVault({commit, dispatch}, payload){
+            api.put(`${payload.resource}/${payload.endpoint}`, payload.vault)
+                .then(res => {
+                    dispatch('getActiveVault', payload)
+                })
+                .catch(err=>{
+                    commit('handleError', err)
+                })
+        },
 
         // DELETE self-posted listing (for given model type)
 
@@ -195,7 +204,7 @@ var store = new Vuex.Store({
         createVault({ commit, dispatch }, payload) {
             api.post(payload.resource, payload.data)
                 .then(res => {
-                    dispatch('getVaults', payload)
+                    dispatch('getVaults', {resource:payload.resource, id:payload.user.id})
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -207,6 +216,7 @@ var store = new Vuex.Store({
                     payload.resource = "keeps"
                     payload.endpoint = payload.keep.id
                     dispatch('updateKeep', payload)
+                    router.push({path: '/vaults/' + payload.data.vaultId})
                 })
                 .catch(err => {
                     commit('handleError', err)
@@ -215,7 +225,7 @@ var store = new Vuex.Store({
         removeKeep({commit, dispatch}, payload){
             api.delete(payload.resource + "/vaults/" + payload.endpoint + "/keeps/" + payload.endpoint2)
                 .then(res => {
-                    dispatch('getVaultKeeps')
+                    dispatch('getVaultKeeps', payload)
                 })
         },
         getVaultKeeps({ commit, dispatch }, payload) {
@@ -232,6 +242,17 @@ var store = new Vuex.Store({
                     payload.resource = "vaultKeeps"
                     payload.endpoint = res.data.id
                     dispatch('getVaultKeeps', payload)
+                })
+        },
+        deleteVault({commit, dispatch}, payload){
+            api.delete(payload.resource + "/" + payload.endpoint, payload.endpoint)
+                .then(res =>{
+                    payload.id = payload.endpoint
+                    dispatch("getVaults", payload)
+                    router.push({path: '/profile/'+ payload.activeUser})
+                })
+                .catch(err =>{
+                    commit("handleError", err)
                 })
         }
 
