@@ -33,6 +33,11 @@ namespace keepr.Repositories
             return _db.QueryFirstOrDefault<Keep>($"SELECT * FROM keeps WHERE id = {id}", id);
         }
 
+        internal IEnumerable<Keep> GetAllBySearch(string v)
+        {
+            return _db.Query<Keep>($"SELECT * FROM KEEPS WHERE public = true AND name LIKE '%{v}%'");
+        }
+
         public Keep Add(Keep keep)
         {
 
@@ -59,7 +64,7 @@ namespace keepr.Repositories
                     ImageUrl = @ImageUrl, 
                     UserId = @UserId, 
                     KeepCount = @KeepCount, 
-                    Viewed = @Viewed 
+                    Viewed = @Viewed, 
                     Public = @Public
                 WHERE id = {id};
                 SELECT * FROM keeps WHERE id = {id};", keep);

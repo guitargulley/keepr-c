@@ -113,7 +113,12 @@ var store = new Vuex.Store({
                     dispatch('authenticate')
                 })
         },
-
+        findKeeps({commit, dispatch}, payload){
+            api(payload.resource+"/search/"+payload.data, payload.data)
+                .then(res=>{
+                    commit('setKeeps', {data:res.data})
+                })
+        },
         // GET all listings of one model
         getKeeps({ commit, dispatch }, payload) {
             api(`${payload.resource}`)

@@ -1,13 +1,13 @@
 <template>
   <div id="app" class="container-fluid">
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar">
       <div class="navbar-header">
-        <a class="navbar-brand" style="font-family: 'Abril Fatface', cursive">KeepR</a>
+        <a class="navbar-brand" style="font-family: 'Amatic SC',cursive; font-size:3em; color:rgb(172, 67, 67);text-shadow:1px 1px 2px white;">KeepR</a>
         <div class="text-right" v-if="activeUser.hasOwnProperty('username')">
           <p class="navbar-text">Welcome {{activeUser.username}}</p>
-          <router-link :to="{name: 'Home'}"><button type="button" class="btn btn-primary navbar-btn">HOME</button></router-link>
-          <router-link :to="{path: '/profile/'+activeUser.id}"><button type="button" class="btn btn-primary navbar-btn">PROFILE</button></router-link>
-          <button type="button" class="btn btn-danger navbar-btn logout-btn" @click="logout" style="margin-right: 10px">Logout</button>
+          <router-link :to="{name: 'Home'}"><button type="button" class="btn  navbar-btn home-btn">HOME</button></router-link>
+          <router-link :to="{path: '/profile/'+activeUser.id}"><button type="button" class="btn  navbar-btn profile-btn">PROFILE</button></router-link>
+          <button type="button" class="btn  navbar-btn logout-btn" @click="logout" style="margin-right: 10px">Logout</button>
         </div>
         <div class="text-right" v-else>
           <button type="button" class="btn btn-primary navbar-btn " data-toggle="modal" data-target="#login">Login</button>
@@ -151,14 +151,53 @@
 </script>
 
 <style>
-  .info-text {
-    font-family: 'Source Sans Pro', sans-serif;
+  body{
+    font-family:'Cinzel',serif;
+    background-image:url("https://media.gettyimages.com/photos/teak-wood-background-horizontal-drop-shadow-picture-id485870457?b=1&k=6&m=485870457&s=612x612&w=0&h=rw83rMbYbRBha9o7x2dH90HAXlhfpapbsRGc5GPj9WY=");
+    background-attachment: fixed;
+    background-size:cover;
+    background-repeat:none
   }
-
+  .navbar{
+    background-color:rgba(0, 0, 0, 0.363);
+    
+  }
+  .home-btn{
+    background-color:rgba(134, 226, 233, 0.521);
+    color:white;
+  }
+  .profile-btn{
+    background-color:rgba(134, 226, 233, 0.521);
+    color:white;
+  }
+  .logout-btn{
+    background-color:rgba(233, 150, 122, 0.493);
+    color:white;
+  }
+  .well{
+    background-color: rgba(0, 0, 0, 0.281);
+    border-color: black;
+  }
+  
+  .info-text {
+    font-family: 'Bad Script';
+  }
+  .navbar .navbar-header .navbar-text{
+    font-family: 'Amatic SC',cursive;
+    color:white;
+    text-shadow:1px 1px 2px black;
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: .3em;
+  }
   .btn-default {
     width: 100%;
   }
-
+  .navbar-btn{
+    font-family: 'Amatic SC', cursive;
+    text-shadow: 1px 1px 5px black;
+    letter-spacing: .5em
+  }
   .screenshot {
     margin-left: 50px;
   }
@@ -208,5 +247,98 @@
       margin: 2px;
       font: black;
     }
+    .container {
+    padding: 1em 0;
+    float: left;
+    width: 100%;
+  }
+  @media screen and (max-width: 640px) {
+    .container {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .container {
+      width: 100%;
+    }
+  }
+  .container .title{
+    color: rgba(255, 255, 255, 0.788);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    overflow: hidden;
+  }
+
+  .content .content-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    height: 99%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+  }
+
+  .content:hover .content-overlay {
+    opacity: 1;
+  }
+
+  .content-image {
+    width: 100%;
+  }
+
+  .content-details {
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+  .content:hover .content-details {
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+  }
+
+  .content-details h2 {
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+  }
+
+  .content-details p {
+    color: #fff;
+    font-size: 0.8em;
+  }
+
+  .fadeIn-bottom {
+    top: 80%;
+  }
   }
 </style>

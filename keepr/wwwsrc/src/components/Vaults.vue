@@ -67,24 +67,24 @@
                 <button class="btn btn-warning" @mouseover="getActiveVault" data-toggle="modal" data-target="#edit-vault">EDIT VAULT</button>
             </div>
             <div class="col-xs-11 text-center">
-                <h1>{{activeVault.name}}</h1>
+                <h1 class="vault-name">{{activeVault.name}}</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" v-for="keep in vaultKeeps">
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 well" v-for="keep in vaultKeeps">
                 <div class="container">
                     <h2 class="title">{{keep.name}}</h2>
                     <div class="content">
                         <div class="content-overlay"></div>
                         <img class="content-image" :src="keep.imageUrl" alt="">
                         <div class="content-details fadeIn-bottom">
-                            <button class="btn btn-warning">
+                            <button class="btn eye-btn">
                                 <i class="fa fa-eye fa-2x" title="View Keep" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-danger" title="Remove from Vault" @click="removeKeep(keep.id)">
+                            <button class="btn delete-btn" title="Remove from Vault" @click="removeKeep(keep.id)">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
                             </button>
-                            <button class="btn btn-primary">
+                            <button class="btn share-btn">
                                 <i class="fa fa-share-alt fa-2x" title="Share Keep" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -102,9 +102,9 @@
         name: 'vaults',
         data() {
             return {
-                vault:{
-                    name:"",
-                    description:""
+                vault: {
+                    name: "",
+                    description: ""
                 }
             }
         },
@@ -151,9 +151,9 @@
                     activeUser: this.activeUser.id
                 })
             },
-            editVault(){
-                var editedVault={
-                    name:this.vault.name,
+            editVault() {
+                var editedVault = {
+                    name: this.vault.name,
                     description: this.vault.description,
                     userId: this.activeUser.id
                 }
@@ -165,12 +165,12 @@
 
                 })
             },
-            getActiveVault(){
-                this.$store.dispatch('getActiveVault',{
+            getActiveVault() {
+                this.$store.dispatch('getActiveVault', {
                     resource: "vaults",
                     endpoint: this.$route.params.id
                 })
-                this.vault={
+                this.vault = {
                     name: this.activeVault.name,
                     description: this.activeVault.description
                 }
@@ -180,6 +180,26 @@
 </script>
 
 <style>
+    .share-btn{
+    margin-bottom:10em;
+    background-color:rgba(140, 140, 153, 0.801);
+    color:rgba(245, 245, 245, 0.445);
+  }
+  .eye-btn{
+    margin-bottom:10em;
+    background-color:rgba(134, 226, 233, 0.521);
+  }
+  .delete-btn{
+    margin-bottom:10em;
+    background-color:rgba(233, 150, 122, 0.493);
+  }
+    .vault-name {
+        font-family: 'Cinzel', serif;
+        font-size: 5em;
+        color: rgba(255, 255, 255, 0.664);
+        text-shadow: 1px 1px 2px black;
+    }
+
     .container {
         padding: 1em 0;
         float: left;
@@ -200,7 +220,7 @@
     }
 
     .container .title {
-        color: #1a1a1a;
+        color: rgba(255, 255, 255, 0.788);
         text-align: center;
         margin-bottom: 10px;
     }

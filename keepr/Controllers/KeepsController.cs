@@ -27,7 +27,11 @@ namespace keepr.Controllers
         {
             return db.GetAllByUserId(id);
         }
-
+        [HttpGet("search/{query}")]
+        public IEnumerable<Keep> GetBySearch(string query)
+        {
+            return db.GetAllBySearch(query);
+        }
         // GET api/values/5
         [HttpGet("{id}")]
         public Keep Get(int id)

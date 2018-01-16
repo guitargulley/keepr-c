@@ -193,29 +193,29 @@
           </div>
         </div>
       </div>
-    <h1>{{activeUser.username}}</h1>
+    <h1 class="profile-name">{{activeUser.username}}</h1>
     <div class="row">
       <div class="col-xs-12">
-        <h1>YOUR VAULTS
-          <button class="btn btn-success">
-            <i class="fa fa-plus fa-2x" aria-hidden="true" data-toggle="modal" data-target="#new-vault"></i>
+        <h1 class="vault-text">YOUR VAULTS
+          <button class="btn plus-btn">
+            <i class="fa fa-plus fa-2x " aria-hidden="true" data-toggle="modal" data-target="#new-vault"></i>
           </button>
         </h1>
 
 
         <div class="row">
-          <div class="col-xs-12" v-for="vault in userVaults">
+          <div class="col-xs-6" v-for="vault in userVaults">
             <router-link :to="{path: '/vaults/'+ vault.id}">
-              <button class="btn btn-primary btn-lg"style="width:100%; margin: 2px"@click="setActiveVault(vault.id)">{{vault.name}}</button>
+              <button class="btn btn-lg vault-btn"style="width:100%; margin: 2px"@click="setActiveVault(vault.id)">{{vault.name}}</button>
             </router-link>
           </div>
         </div>
 
       </div>
       <div class="col-xs-12">
-        <h1>YOUR KEEPS
-          <button class="btn btn-success">
-            <i class="fa fa-plus fa-2x" aria-hidden="true" data-toggle="modal" data-target="#new-keep"></i>
+        <h1 class="keep-text">YOUR KEEPS
+          <button class="btn  plus-btn ">
+            <i class="fa fa-plus fa-2x " aria-hidden="true" data-toggle="modal" data-target="#new-keep"></i>
           </button>
         </h1>
         <div class="row">
@@ -226,13 +226,13 @@
                       <div class="content-overlay"></div>
                       <img class="content-image" :src="keep.imageUrl" alt="">
                       <div class="content-details fadeIn-bottom">
-                          <button class="btn btn-warning"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#edit-keep">
+                          <button class="btn btn-lg edit-btn"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#edit-keep">
                               <i class="fa fa-pencil"  title="Edit Keep" aria-hidden="true"></i>
                           </button>
-                          <button class="btn btn-danger"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#delete-keep"title="Delete Keep">
+                          <button class="btn btn-lg delete-btn"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#delete-keep"title="Delete Keep">
                               <i class="fa fa-minus" aria-hidden="true"></i>
                           </button>
-                          <button class="btn btn-primary">
+                          <button class="btn btn-lg eye-btn">
                               <i class="fa fa-eye" title="View Keep"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
                           </button>
                       </div>
@@ -351,6 +351,44 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+   .edit-btn{
+    margin-bottom:10em;
+    background-color:rgba(140, 140, 153, 0.801);
+    color:rgba(245, 245, 245, 0.445);
+  }
+  .eye-btn{
+    margin-bottom:10em;
+    background-color:rgba(134, 226, 233, 0.521);
+  }
+  .delete-btn{
+    margin-bottom:10em;
+    background-color:rgba(233, 150, 122, 0.493);
+  }
+  .vault-btn{
+    background-color:rgba(99, 222, 231, 0.336);
+    color:white;
+    box-shadow:1px 1px 5px black;
+    text-shadow: 0px 0px 1px black;
+  }
+  .plus-btn{
+    background-color:rgba(255, 255, 255, 0.623);
+    color: rgba(0, 0, 0, 0.534);
+    box-shadow:1px 1px 2px black;
+  }
+  .profile-name{
+    font-family:'Cinzel', serif;
+    font-size:5em;
+    color:rgba(255, 255, 255, 0.664);
+    text-shadow:1px 1px 2px black;
+  }
+  .keep-text{
+    color:rgba(255, 255, 255, 0.904);
+    text-shadow:0px 0px 1px black;
+  }
+  .vault-text{
+    color:rgba(255, 255, 255, 0.904);
+    text-shadow:0px 0px 1px black;
+  }
       .container {
         padding: 1em 0;
         float: left;
@@ -370,10 +408,10 @@
         }
     }
 
-    .container .title {
-        color: #1a1a1a;
-        text-align: center;
-        margin-bottom: 10px;
+    .container .title{
+      color: rgba(255, 255, 255, 0.767);
+      text-align: center;
+      margin-bottom: 10px;
     }
 
     .content {

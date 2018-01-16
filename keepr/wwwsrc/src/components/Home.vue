@@ -1,6 +1,7 @@
 <template>
   <div class="home container-fluid text-center">
     <!-- login modal -->
+    <div id="fb-root"></div>
     <div id="login" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content-->
@@ -77,7 +78,7 @@
                 <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="large"
                   data-mobile-iframe="true">
                   <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
-                </div>
+              </div>
               </div>
 
             </div>
@@ -132,14 +133,14 @@
       </div>
     </div>
 
-    <h1>WELCOME TO KeepR!</h1>
+    <h1 style="text-shadow:0px 0px 1px black; color:white;font-weight:bold; font-size:4em">WELCOME TO KeepR!</h1>
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <form id="search-keeps" class="form-inline" @submit.prevent="getKeeps">
-            <div class="search-form-group">
-              <input type="text" name="text" class="form-control" placeholder="Find a Keep">
-              <button class="btn btn-submit btn-success search-btn" title="Search" type="submit">
+          <form id="search-keeps" class="form-inline" @submit.prevent="findKeepsBy">
+            <div class="search-form-group"style=" margin-bottom:10px;">
+              <input type="text" name="text" style="width:50%;"class="form-control" placeholder="Find a Keep" v-model="search">
+              <button class="btn btn-submit search-btn"title="Search" type="submit" >
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
@@ -154,23 +155,23 @@
               <div class="content-overlay"></div>
               <img class="content-image" :src="keep.imageUrl" alt="">
               <div v-if="activeUser" class="content-details fadeIn-bottom">
-                <button class="btn btn-warning">
+                <button class="btn eye">
                   <i class="fa fa-eye fa-2x" title="View Keep" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view"
                     aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-success">
+                <button class="btn check">
                   <i class="fa fa-check fa-2x" title="Add Keep To A Vault" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-primary">
-                  <i class="fa fa-share-alt fa-2x" title="Share Keep" data-toggle="modal" data-target="#share" aria-hidden="true"></i>
-                </button>
+                <button class="btn share-btn">
+                    <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
+              </button>
               </div>
               <div v-else class="content-details fadeIn-bottom">
-                <button class="btn btn-warning">
+                <button class="btn eye">
                   <i class="fa fa-eye fa-2x" title="View Keep" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view"
                     aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-success">
+                <button class="btn check">
                   <i class="fa fa-check fa-2x" title="Add Keep To A Vault" data-toggle="modal" data-target="#login" aria-hidden="true"></i>
                 </button>
               </div>
@@ -190,7 +191,8 @@
         login: {
           email: '',
           password: ''
-        }
+        },
+        search:''
       }
     },
     components: {
@@ -223,7 +225,12 @@
           password: ''
         }
       },
+      findKeepsBy(){
+        debugger
+        this.$store.dispatch('findKeeps', {resource: "keeps", data: this.search})
+      },
       getKeeps() {
+        debugger
         this.$store.dispatch('getKeeps', {
           resource: "keeps",
         })
@@ -256,7 +263,8 @@
           imageUrl: keep.imageUrl,
           userId: keep.userId,
           keepCount: keep.keepCount,
-          viewed: keep.viewed
+          viewed: keep.viewed,
+          public: keep.public
         }
         this.$store.dispatch('updateKeep', { resource: "keeps", endpoint: keep.id, keep: updatedKeep })
       },
@@ -266,12 +274,31 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+  .share-btn{
+    margin-bottom:10em;
+    background-color:rgba(140, 140, 153, 0.801);
+    color:rgba(245, 245, 245, 0.445);
+  }
+  .eye{
+    margin-bottom:10em;
+    background-color:rgba(134, 226, 233, 0.521)
+  }
+  .check{
+    margin-bottom:10em;
+    background-color:rgba(233, 150, 122, 0.493)
+  }
+  .search-btn{
+    background-color:rgba(0, 0, 0, 0.479)
+  }
+  .search-btn i{
+    color:rgba(255, 255, 255, 0.678);
+  }
+
   .container {
     padding: 1em 0;
     float: left;
     width: 100%;
   }
-
   @media screen and (max-width: 640px) {
     .container {
       display: block;
@@ -284,9 +311,8 @@
       width: 100%;
     }
   }
-
-  .container .title {
-    color: #1a1a1a;
+  .container .title{
+    color: rgba(255, 255, 255, 0.788);
     text-align: center;
     margin-bottom: 10px;
   }
@@ -345,7 +371,7 @@
     opacity: 1;
   }
 
-  .content-details h3 {
+  .content-details h2 {
     color: #fff;
     font-weight: 500;
     letter-spacing: 0.15em;
