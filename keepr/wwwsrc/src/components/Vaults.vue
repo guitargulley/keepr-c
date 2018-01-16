@@ -24,7 +24,51 @@
                 </div>
             </div>
         </div>
-
+        <div id="share" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">ShareIt</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                          <h4>Sharing this Keep will charge your credit card $1.99</h4>
+                          <h5>To continue click <a href="#" data-dismiss="modal"data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
+                        </div>
+          
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="just-jokin" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">ShareIt</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6">
+                            <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
+                          </div>
+            
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
         <!-- END OF MODAL -->
         <div id="edit-vault" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -60,13 +104,11 @@
         </div>
         <!-- end of modal -->
         <div class="row">
-            <div class="col-xs-1 text-right">
-                <button class="btn btn-danger" data-toggle="modal" data-target="#delete-vault">DELETE VAULT</button>
+            <div class="col-xs-12 text-center">
+                <button class="btn delete-vault-btn" data-toggle="modal" data-target="#delete-vault">DELETE VAULT</button>
+                <button class="btn edit-vault-btn" @mouseover="getActiveVault" data-toggle="modal" data-target="#edit-vault">EDIT VAULT</button>
             </div>
-            <div class="col-xs-1 col-xs-offset-1 pull right">
-                <button class="btn btn-warning" @mouseover="getActiveVault" data-toggle="modal" data-target="#edit-vault">EDIT VAULT</button>
-            </div>
-            <div class="col-xs-11 text-center">
+            <div class="col-xs-12 text-center">
                 <h1 class="vault-name">{{activeVault.name}}</h1>
             </div>
         </div>
@@ -84,7 +126,7 @@
                             <button class="btn delete-btn" title="Remove from Vault" @click="removeKeep(keep.id)">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
                             </button>
-                            <button class="btn share-btn">
+                            <button class="btn share-btn" data-toggle="modal" data-target="#share">
                                 <i class="fa fa-share-alt fa-2x" title="Share Keep" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -180,19 +222,33 @@
 </script>
 
 <style>
-    .share-btn{
-    margin-bottom:10em;
-    background-color:rgba(140, 140, 153, 0.801);
-    color:rgba(245, 245, 245, 0.445);
-  }
-  .eye-btn{
-    margin-bottom:10em;
-    background-color:rgba(134, 226, 233, 0.521);
-  }
-  .delete-btn{
-    margin-bottom:10em;
-    background-color:rgba(233, 150, 122, 0.493);
-  }
+    .share-btn {
+        margin-bottom: 10em;
+        background-color: rgba(140, 140, 153, 0.801);
+        color: rgba(245, 245, 245, 0.445);
+    }
+
+    .eye-btn {
+        margin-bottom: 10em;
+        background-color: rgba(134, 226, 233, 0.521);
+    }
+
+    .delete-btn {
+        margin-bottom: 10em;
+        background-color: rgba(233, 150, 122, 0.493);
+    }
+
+    .edit-vault-btn {
+        background-color: rgba(134, 226, 233, 0.521);
+        color: rgba(245, 245, 245, 0.445);
+        text-shadow: 0px 0px 1px white;
+    }
+    .delete-vault-btn{
+        background-color: rgba(233, 150, 122, 0.493);  
+        color: rgba(245, 245, 245, 0.445);
+        text-shadow: 0px 0px 1px white;
+    }
+
     .vault-name {
         font-family: 'Cinzel', serif;
         font-size: 5em;

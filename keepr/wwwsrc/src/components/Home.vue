@@ -74,21 +74,40 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-xs-12 col-md-6">
-                <h4>How do you want to share this keep?</h4>
-                <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="large"
-                  data-mobile-iframe="true">
-                  <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
-              </div>
+                <h4>Sharing this Keep will charge your credit card $1.99</h4>
+                <h5>To continue click <a href="#" data-dismiss="modal"data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
               </div>
 
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
           </div>
         </div>
       </div>
     </div>
+    <div id="just-jokin" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">ShareIt</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
+                </div>
+  
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <!-- VIEW KEEP MODAL -->
     <div id="keep-view" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -163,7 +182,7 @@
                   <i class="fa fa-check fa-2x" title="Add Keep To A Vault" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
                 </button>
                 <button class="btn share-btn">
-                    <i class="fa fa-share-alt fa-2x" aria-hidden="true"></i>
+                    <i class="fa fa-share-alt fa-2x" data-toggle="modal" data-target="#share"aria-hidden="true"></i>
               </button>
               </div>
               <div v-else class="content-details fadeIn-bottom">

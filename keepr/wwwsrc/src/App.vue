@@ -10,8 +10,8 @@
           <button type="button" class="btn  navbar-btn logout-btn" @click="logout" style="margin-right: 10px">Logout</button>
         </div>
         <div class="text-right" v-else>
-          <button type="button" class="btn btn-primary navbar-btn " data-toggle="modal" data-target="#login">Login</button>
-          <button type="button" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#signUp">Sign-up</button>
+          <button type="button" class="btn login-btn navbar-btn " data-toggle="modal" data-target="#login">Login</button>
+          <button type="button" class="btn register-btn navbar-btn" style="margin-right: 10px"data-toggle="modal" data-target="#signUp">Sign-up</button>
         </div>
       </div>
 
@@ -171,6 +171,14 @@
     color:white;
   }
   .logout-btn{
+    background-color:rgba(233, 150, 122, 0.493);
+    color:white;
+  }
+  .login-btn{
+    background-color:rgba(134, 226, 233, 0.521);
+    color:white;
+  }
+  .register-btn{
     background-color:rgba(233, 150, 122, 0.493);
     color:white;
   }
