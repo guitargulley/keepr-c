@@ -2,7 +2,7 @@
   <div id="app" class="container-fluid">
     <nav class="navbar">
       <div class="navbar-header">
-        <a class="navbar-brand" style="font-family: 'Amatic SC',cursive; font-size:3em; color:rgb(172, 67, 67);text-shadow:1px 1px 2px white;">KeepR</a>
+        <a class="navbar-brand" style="font-family: 'Amatic SC',cursive; font-size:3em; color:rgb(172, 67, 67);text-shadow:1px 1px 2px white;">keepR</a>
         <div class="text-right" v-if="activeUser.hasOwnProperty('username')">
           <p class="navbar-text">Welcome {{activeUser.username}}</p>
           <router-link :to="{name: 'Home'}"><button type="button" class="btn  navbar-btn home-btn">HOME</button></router-link>

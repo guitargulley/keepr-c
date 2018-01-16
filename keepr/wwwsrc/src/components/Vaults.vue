@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 well" v-for="keep in vaultKeeps">
+            <div class="col-xs-6  col-lg-3 well" v-for="keep in vaultKeeps">
                 <div class="container">
                     <h2 class="title">{{keep.name}}</h2>
                     <div class="content">

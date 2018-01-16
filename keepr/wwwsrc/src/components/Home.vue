@@ -115,7 +115,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Keep Deetz</h4>
+            <h4 class="modal-title">keep Deetz</h4>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <h1 style="text-shadow:0px 0px 1px black; color:white;font-weight:bold; font-size:4em">WELCOME TO KeepR!</h1>
+    <h1 style="text-shadow:0px 0px 1px black; color:white;font-weight:bold; font-size:4em">WELCOME TO keepR!</h1>
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
@@ -167,7 +167,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 well" v-for="keep in keeps">
+        <div class="col-xs-6 col-sm-4  col-lg-3 well" v-for="keep in keeps">
           <div class="container" @mouseover="hoverHandle(keep.id)">
             <h2 class="title">{{keep.name}}</h2>
             <div class="content">
