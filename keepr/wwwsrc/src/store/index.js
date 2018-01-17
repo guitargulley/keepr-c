@@ -59,8 +59,18 @@ var store = new Vuex.Store({
         },
         setVaultKeeps(state, data) {
             state.vaultKeeps = data
-        }
-    },
+        },
+        resetState(state, data) {
+            state.error = {},
+            state.activeUser = {},
+            state.keeps = [],
+            state.activeKeep = {},
+            state.userKeeps = [],
+            state.userVaults = [],
+            state.activeVault = {},
+            state.vaultKeeps = []
+    }
+},
     actions: {
 
         //LOGIN
@@ -111,8 +121,9 @@ var store = new Vuex.Store({
                     var user = {}
 
                     commit('setUser', user)
-                    router.push({ name: 'Home' })
+                    commit('resetState')
                     dispatch('authenticate')
+                    router.push({ name: 'Home' })
                 })
         },
         findKeeps({ commit, dispatch }, payload) {
@@ -121,7 +132,7 @@ var store = new Vuex.Store({
                 .then(res => {
                     commit('setKeeps', res.data)
                 })
-                .catch(err=>{
+                .catch(err => {
                     commit('handleError', err)
                 })
         },
@@ -289,7 +300,7 @@ var store = new Vuex.Store({
                 })
         },
         update({ commit, dispatch }, payload) {
-            
+
             api.put(`${payload.resource}/${payload.endpoint}`, payload.data)
                 .then(res => {
                     if (payload.action) {
@@ -310,8 +321,8 @@ var store = new Vuex.Store({
                 })
         },
         getAll({ commit, dispatch }, payload) {
-            
-            api(`${payload.resource}/${payload.endpoint}`,payload.endpoint)
+
+            api(`${payload.resource}/${payload.endpoint}`, payload.endpoint)
                 .then(res => {
                     if (payload.action) {
                         payload.resource = payload.resource2

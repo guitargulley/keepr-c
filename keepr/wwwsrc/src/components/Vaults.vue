@@ -44,7 +44,7 @@
                               <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
                             </div>
                             <div class="col-xs-10">
-                              <h4 class="text-left">Viewed: {{activeKeep.viewed}}</h4>
+                              <h4 class="text-left">Viewed: {{activeKeep.viewed +1}}</h4>
                             </div>
                           </div>
                           <div class="row">

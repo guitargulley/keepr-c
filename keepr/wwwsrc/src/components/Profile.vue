@@ -172,7 +172,7 @@
                         <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
                       </div>
                       <div class="col-xs-10">
-                        <h4 class="text-left">Viewed: {{activeKeep.viewed}}</h4>
+                        <h4 class="text-left">Viewed: {{activeKeep.viewed +1}}</h4>
                     </div>
                   </div>
                   <div class="row">
@@ -215,7 +215,7 @@
       <div class="col-xs-12">
         <h1 class="keep-text">YOUR KEEPS
           <button class="btn  plus-btn ">
-            <i class="fa fa-plus fa-2x " aria-hidden="true" data-toggle="modal" data-target="#new-keep"></i>
+            <i class="fa fa-plus fa-2x " aria-hidden="true" @mouseover="resetVmodel"data-toggle="modal" data-target="#new-keep"></i>
           </button>
         </h1>
         <div class="row">
@@ -304,20 +304,31 @@
       }
     },
     methods: {
+      resetVmodel(){
+        this.newKeep={
+          name:"",
+          imageUrl: "",
+          public: false
+        }
+      },
       createKeep() {
         this.newKeep.keepcount = 0
         this.newKeep.viewed = 0
         this.$store.dispatch('create', {
           resource: "keeps",
           endpoint: "",
-          data: this.newKeep, 
+          data: this.newKeep,
+          action: "getAll",
+          resource2: "keeps",
+          endpoint2: `users/${this.activeUser.id}`,
+          mutation2: "setUserKeeps" 
         })
-        this.$store.dispatch('getAll',{
-          resource:"keeps",
-          endpoint: `users/${this.activeUser.id}`,
-          data:{},
-          mutation: 'setUserKeeps'
-        })
+        // this.$store.dispatch('getAll',{
+        //   resource:"keeps",
+        //   endpoint: `users/${this.activeUser.id}`,
+        //   data:{},
+        //   mutation: 'setUserKeeps'
+        // })
         this.newKeep = {
           name: "",
           imageurl: ""
