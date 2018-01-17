@@ -46,7 +46,7 @@
                 <h4>Select Vault to add to</h4>
                 <div class="row" v-for="vault in userVaults">
 
-                  <button class="btn btn-primary" style="width:80%; margin-bottom:3px" @click="addKeepToVault(vault.id)" data-dismiss="modal">{{vault.name}}</button>
+                  <button class="btn vault-btn" style="width:80%; margin-bottom:3px" @click="addKeepToVault(vault.id)" data-dismiss="modal">{{vault.name}}</button>
                 </div>
               </div>
               <div class="col-xs-12 col-md-6 ">
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn close-btn" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -73,41 +73,42 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-xs-12 col-md-6">
+              <div class="col-xs-12">
                 <h4>Sharing this Keep will charge your credit card $1.99</h4>
-                <h5>To continue click <a href="#" data-dismiss="modal"data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
+                <h4>To continue click
+                  <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h4>
               </div>
 
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
+            <button type="button" class="btn close-btn" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
           </div>
         </div>
       </div>
     </div>
     <div id="just-jokin" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">ShareIt</h4>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-xs-12 col-md-6">
-                  <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
-                </div>
-  
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">ShareIt</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
               </div>
+
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn close-btn" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
+    </div>
     <!-- VIEW KEEP MODAL -->
     <div id="keep-view" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -137,16 +138,16 @@
                     <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
                   </div>
                   <div class="col-xs-10">
-                    <h4 class="text-left">Keeps:{{activeKeep.keepCount}}</h4>
+                    <h4 class="text-left">Keeps: {{activeKeep.keepCount}}</h4>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success pull-left" data-toggle="modal" data-target="#add-to-vault" data-dismiss="modal">
+            <button v-if="activeUser"class="btn keep-btn pull-left" data-toggle="modal" data-target="#add-to-vault" data-dismiss="modal">
               <i class="fa fa-check" aria-hidden="true"></i>Keep It</button>
-            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+            <button type="button" class="btn close-btn pull-right" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -157,9 +158,9 @@
       <div class="row">
         <div class="col-xs-12">
           <form id="search-keeps" class="form-inline" @submit.prevent="findKeepsBy">
-            <div class="search-form-group"style=" margin-bottom:10px;">
-              <input type="text" name="text" style="width:50%;"class="form-control" placeholder="Find a Keep" v-model="search">
-              <button class="btn btn-submit search-btn"title="Search" type="submit" >
+            <div class="search-form-group" style=" margin-bottom:10px;">
+              <input type="text" name="text" style="width:50%;" class="form-control" placeholder="Find a Keep" v-model="search">
+              <button class="btn btn-submit search-btn" title="Search" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>
@@ -169,7 +170,7 @@
       <div class="row">
         <div class="col-xs-6 col-sm-4  col-lg-3 well" v-for="keep in keeps">
           <div class="container" @mouseover="hoverHandle(keep.id)">
-            <h2 class="title">{{keep.name}}</h2>
+            
             <div class="content">
               <div class="content-overlay"></div>
               <img class="content-image" :src="keep.imageUrl" alt="">
@@ -182,8 +183,8 @@
                   <i class="fa fa-check fa-2x" title="Add Keep To A Vault" data-toggle="modal" data-target="#add-to-vault" aria-hidden="true"></i>
                 </button>
                 <button class="btn share-btn">
-                    <i class="fa fa-share-alt fa-2x" data-toggle="modal" data-target="#share"aria-hidden="true"></i>
-              </button>
+                  <i class="fa fa-share-alt fa-2x" data-toggle="modal" data-target="#share" aria-hidden="true"></i>
+                </button>
               </div>
               <div v-else class="content-details fadeIn-bottom">
                 <button class="btn eye">
@@ -195,6 +196,21 @@
                 </button>
               </div>
             </div>
+          </div>
+          <div>
+              <h2 class="title">{{keep.name}}</h2>
+            <button class="btn eye-2">
+              <i class="fa fa-eye" title="View Keep" aria-hidden="true" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view">:{{keep.viewed}}</i>
+            </button>
+            <button v-if="activeUser"class="btn check-2">
+              <i class="fa fa-check" title="Add Keep To A Vault" aria-hidden="true" data-toggle="modal" data-target="#add-to-vault">:{{keep.keepCount}}</i>
+            </button>
+            <button class="btn check-2" v-else>
+              <i class="fa fa-check" title="Add Keep To A Vault" data-toggle="modal" data-target="#login" aria-hidden="true">:{{keep.keepCount}}</i>
+            </button>
+            <button v-if="activeUser"class="btn share-btn-2">
+              <i class="fa fa-share-alt" data-toggle="modal" data-target="#share" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -211,7 +227,7 @@
           email: '',
           password: ''
         },
-        search:''
+        search: ''
       }
     },
     components: {
@@ -244,12 +260,17 @@
           password: ''
         }
       },
-      findKeepsBy(){
-        debugger
-        this.$store.dispatch('findKeeps', {resource: "keeps", data: this.search})
+      findKeepsBy() {
+        if(this.search != ""){
+          this.$store.dispatch('findKeeps', { resource: "keeps", data: this.search })
+        }
+        else{
+          this.$store.dispatch('getKeeps', {
+            resource: "keeps"
+          })
+        }
       },
       getKeeps() {
-        debugger
         this.$store.dispatch('getKeeps', {
           resource: "keeps",
         })
@@ -293,24 +314,72 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .share-btn{
-    margin-bottom:10em;
-    background-color:rgba(140, 140, 153, 0.801);
-    color:rgba(245, 245, 245, 0.445);
+  #keep-view .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
   }
-  .eye{
-    margin-bottom:10em;
-    background-color:rgba(134, 226, 233, 0.521)
+
+  .keep-btn {
+    background-color: rgba(233, 150, 122, 0.493);
   }
-  .check{
-    margin-bottom:10em;
-    background-color:rgba(233, 150, 122, 0.493)
+
+  .close-btn {
+    background-color: rgba(140, 140, 153, 0.801)
   }
-  .search-btn{
-    background-color:rgba(0, 0, 0, 0.479)
+
+  .vault-btn {
+    background-color: rgba(233, 150, 122, 0.493);
   }
-  .search-btn i{
-    color:rgba(255, 255, 255, 0.678);
+
+  #add-to-vault .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
+  }
+
+  #share .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
+  }
+
+  #just-jokin .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
+  }
+
+  .share-btn {
+    margin-bottom: 10em;
+    background-color: rgba(140, 140, 153, 0.801);
+    color: rgba(245, 245, 245, 0.445);
+  }
+
+  .eye {
+    margin-bottom: 10em;
+    background-color: rgba(134, 226, 233, 0.521)
+  }
+
+  .check {
+    margin-bottom: 10em;
+    background-color: rgba(233, 150, 122, 0.493)
+  }
+  .share-btn-2 {
+    background-color: rgba(140, 140, 153, 0.801);
+    color: rgba(245, 245, 245, 0.445);
+  }
+
+  .eye-2 {
+    background-color: rgba(134, 226, 233, 0.521)
+  }
+
+  .check-2 {
+    background-color: rgba(233, 150, 122, 0.493)
+  }
+
+  .search-btn {
+    background-color: rgba(0, 0, 0, 0.479)
+  }
+
+  .search-btn i {
+    color: rgba(255, 255, 255, 0.678);
   }
 
   .container {
@@ -318,6 +387,7 @@
     float: left;
     width: 100%;
   }
+
   @media screen and (max-width: 640px) {
     .container {
       display: block;
@@ -330,7 +400,8 @@
       width: 100%;
     }
   }
-  .container .title{
+
+   .title {
     color: rgba(255, 255, 255, 0.788);
     text-align: center;
     margin-bottom: 10px;
@@ -347,7 +418,7 @@
   .content .content-overlay {
     background: rgba(0, 0, 0, 0.7);
     position: absolute;
-    height: 99%;
+    height: 100%;
     width: 100%;
     left: 0;
     top: 0;

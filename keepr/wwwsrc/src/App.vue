@@ -6,7 +6,7 @@
         <div class="text-right" v-if="activeUser.hasOwnProperty('username')">
           <p class="navbar-text">Welcome {{activeUser.username}}</p>
           <router-link :to="{name: 'Home'}"><button type="button" class="btn  navbar-btn home-btn">HOME</button></router-link>
-          <router-link :to="{path: '/profile/'+activeUser.id}"><button type="button" class="btn  navbar-btn profile-btn">PROFILE</button></router-link>
+          <router-link :to="{path: '/profile/'+activeUser.id}"><button type="button" class="btn  navbar-btn profile-btn">DASHBOARD</button></router-link>
           <button type="button" class="btn  navbar-btn logout-btn" @click="logout" style="margin-right: 10px">Logout</button>
         </div>
         <div class="text-right" v-else>

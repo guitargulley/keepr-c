@@ -105,8 +105,8 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-xs-12">
-                    <h4>Are you sure you want to delete {{activeKeep.name}}?</h4>
-                    <h6>Once Deleted you will not be able to retrieve this vault again.</h6>
+                    <h4>Are you sure you want to delete "{{activeKeep.name}}"?</h4>
+                    <h6>Once Deleted you will not be able to retrieve this keep again.</h6>
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@
           </div>
         </div>
       </div>
-    <h1 class="profile-name">{{activeUser.username}}</h1>
+    <h1 class="profile-name">{{activeUser.username}}'s Dashboard</h1>
     <div class="row">
       <div class="col-xs-12">
         <h1 class="vault-text">YOUR VAULTS
@@ -221,7 +221,6 @@
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-lg-3 well" v-for="keep in userKeeps">
               <div class="container">
-                  <h2 class="title">{{keep.name}}</h2>
                   <div class="content">
                       <div class="content-overlay"></div>
                       <img class="content-image" :src="keep.imageUrl" alt="">
@@ -237,6 +236,18 @@
                           </button>
                       </div>
                   </div>
+              </div>
+              <div>
+                  <h2 class="title">{{keep.name}}</h2>
+                  <button class="btn btn-lg edit-btn-2"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#edit-keep">
+                      <i class="fa fa-pencil"  title="Edit Keep" aria-hidden="true"></i>
+                  </button>
+                <button class="btn btn-lg delete-btn-2"  @mouseover="setActiveKeep(keep)" data-toggle="modal" data-target="#delete-keep"title="Delete Keep">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-lg eye-btn-2">
+                    <i class="fa fa-eye" title="View Keep" aria-hidden="true" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view">:{{keep.viewed}}</i>
+                  </button>
               </div>
           </div>
         </div>
@@ -364,6 +375,19 @@
     margin-bottom:10em;
     background-color:rgba(233, 150, 122, 0.493);
   }
+  .edit-btn-2{
+
+    background-color:rgba(140, 140, 153, 0.801);
+    color:rgba(245, 245, 245, 0.445);
+  }
+  .eye-btn-2{
+
+    background-color:rgba(134, 226, 233, 0.521);
+  }
+  .delete-btn-2{
+
+    background-color:rgba(233, 150, 122, 0.493);
+  }
   .vault-btn{
     background-color:rgba(99, 222, 231, 0.336);
     color:white;
@@ -408,7 +432,7 @@
         }
     }
 
-    .container .title{
+    .title{
       color: rgba(255, 255, 255, 0.767);
       text-align: center;
       margin-bottom: 10px;
@@ -425,7 +449,7 @@
     .content .content-overlay {
         background: rgba(0, 0, 0, 0.7);
         position: absolute;
-        height: 99%;
+        height: 100%;
         width: 100%;
         left: 0;
         top: 0;

@@ -17,26 +17,17 @@ namespace keepr.Repositories
         {
             _db = db;
         }
-
-        // Find One Find Many add update delete
+        // GET ALL KEEPS IN A VAULT
         public IEnumerable<Keep> GetAll(int id)
         {
             return _db.Query<Keep>($@"
             SELECT * FROM vaultkeeps vk
             INNER JOIN keeps k ON k.id = vk.keepId 
             WHERE (vaultId = {id})");
-            
         }
-
-        public VaultKeep GetById(int id)
-        {
-            Console.WriteLine("THIS IS THE GET REQUEST ID: ", id);
-            return _db.QueryFirstOrDefault<VaultKeep>($"SELECT * FROM vaultkeeps WHERE id = {id}", id);
-        }
-
+        //ADD KEEP TO VAULT
         public String Add(VaultKeep vaultkeep)
         {
-
             var success = _db.ExecuteScalar<int>("INSERT INTO vaultkeeps (UserId, VaultId, KeepID)"
                         + " VALUES(@UserId, @VaultId, @KeepID); SELECT LAST_INSERT_ID()", new
                         {
@@ -44,22 +35,9 @@ namespace keepr.Repositories
                             vaultkeep.VaultId,
                             vaultkeep.KeepId,
                         });
-            
             return success > 0 ? "success" : "umm that didnt work";
-
         }
-
-        public VaultKeep GetOneByIdAndUpdate(int id, VaultKeep vaultkeep)
-        {
-            return _db.QueryFirstOrDefault<VaultKeep>($@"
-                UPDATE vaultkeeps SET  
-                    UserID = @UserID, 
-                    VaultId = @VaultId, 
-                    KeepId = @KeepId 
-                WHERE Id = {id};
-                SELECT * FROM vaultkeeps WHERE id = {id};", vaultkeep);
-        }
-
+        //REMOVE KEEP FROM VAULT
         public string FindByIdAndRemove(int vaultId, int id)
         {
             var success = _db.Execute($@"

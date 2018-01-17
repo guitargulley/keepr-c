@@ -12,7 +12,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">
-                                <h4>Are you sure you want to delete {{activeVault.name}}?</h4>
+                                <h4>Are you sure you want to delete "{{activeVault.name}}"?</h4>
                                 <h6>Once Deleted you will not be able to retrieve this vault again.</h6>
                             </div>
                         </div>
@@ -24,51 +24,92 @@
                 </div>
             </div>
         </div>
-        <div id="share" class="modal fade" role="dialog">
+        <div id="keep-view" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">ShareIt</h4>
+                      <h4 class="modal-title">keep Deetz</h4>
                     </div>
                     <div class="modal-body">
                       <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                          <h4>Sharing this Keep will charge your credit card $1.99</h4>
-                          <h5>To continue click <a href="#" data-dismiss="modal"data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
+                        <div class="col-xs-6">
+                          <h4>{{activeKeep.name}}</h4>
+                          <img :src="activeKeep.imageUrl" alt="">
                         </div>
-          
+                        <div class="col-xs-6">
+                          <div class="row" style="margin-top: 7rem">
+                            <div class="col-xs-2">
+                              <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-xs-10">
+                              <h4 class="text-left">Viewed: {{activeKeep.viewed}}</h4>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-2">
+                              <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-xs-10">
+                              <h4 class="text-left">Keeps: {{activeKeep.keepCount}}</h4>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
+                      <button type="button" class="btn close-btn pull-right" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div id="just-jokin" class="modal fade" role="dialog">
-                  <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <div class="modal-header">
+        <div id="share" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">ShareIt</h4>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-xs-12 col-md-6">
-                            <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
-                          </div>
-            
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
                     </div>
-                  </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h4>Sharing this Keep will charge your credit card $1.99</h4>
+                                <h5>To continue click
+                                    <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn close-btn" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">Close</button>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div id="just-jokin" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">ShareIt</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- END OF MODAL -->
         <div id="edit-vault" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -113,15 +154,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6  col-lg-3 well" v-for="keep in vaultKeeps">
+            <div class="col-xs-6  col-lg-3 well" @mouseover="setActiveKeep(keep)" v-for="keep in vaultKeeps">
                 <div class="container">
-                    <h2 class="title">{{keep.name}}</h2>
                     <div class="content">
                         <div class="content-overlay"></div>
                         <img class="content-image" :src="keep.imageUrl" alt="">
                         <div class="content-details fadeIn-bottom">
                             <button class="btn eye-btn">
-                                <i class="fa fa-eye fa-2x" title="View Keep" aria-hidden="true"></i>
+                                <i class="fa fa-eye fa-2x" title="View Keep" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
                             </button>
                             <button class="btn delete-btn" title="Remove from Vault" @click="removeKeep(keep.id)">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
@@ -132,10 +172,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="text-center">
+                    <h2 class="title">{{keep.name}}</h2>
+                    <button class="btn eye-btn-2">
+                        <i class="fa fa-eye " title="View Keep" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
+                    </button>
+                    <button class="btn delete-btn-2" title="Remove from Vault" @click="removeKeep(keep.id)">
+                        <i class="fa fa-minus " aria-hidden="true"></i>
+                    </button>
+                    <button class="btn share-btn-2" data-toggle="modal" data-target="#share">
+                        <i class="fa fa-share-alt " title="Share Keep" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-
     </div>
 </template>
 
@@ -159,6 +209,9 @@
             },
             vaultKeeps() {
                 return this.$store.state.vaultKeeps
+            },
+            activeKeep(){
+                return this.$store.state.activeKeep
             }
         },
         mounted() {
@@ -177,6 +230,9 @@
                 this.$store.dispatch('getVaultKeeps', {
                     resource: "vaultkeeps",
                 })
+            },
+            setActiveKeep(keep){
+                this.$store.dispatch('getKeep', { resource: "keeps", id: keep.id })
             },
             removeKeep(id) {
                 this.$store.dispatch('removeKeep', {
@@ -222,6 +278,19 @@
 </script>
 
 <style>
+    #keep-view .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
+  }
+
+  #share .modal-content {
+    background-color: rgb(49, 73, 68);
+    color: white;
+  }
+
+  .close-btn {
+    background-color: rgba(140, 140, 153, 0.801)
+  }
     .share-btn {
         margin-bottom: 10em;
         background-color: rgba(140, 140, 153, 0.801);
@@ -237,14 +306,27 @@
         margin-bottom: 10em;
         background-color: rgba(233, 150, 122, 0.493);
     }
+    .share-btn-2 {
+        background-color: rgba(140, 140, 153, 0.801);
+        color: rgba(245, 245, 245, 0.445);
+    }
+
+    .eye-btn-2 {
+        background-color: rgba(134, 226, 233, 0.521);
+    }
+
+    .delete-btn-2 { 
+        background-color: rgba(233, 150, 122, 0.493);
+    }
 
     .edit-vault-btn {
         background-color: rgba(134, 226, 233, 0.521);
         color: rgba(245, 245, 245, 0.445);
         text-shadow: 0px 0px 1px white;
     }
-    .delete-vault-btn{
-        background-color: rgba(233, 150, 122, 0.493);  
+
+    .delete-vault-btn {
+        background-color: rgba(233, 150, 122, 0.493);
         color: rgba(245, 245, 245, 0.445);
         text-shadow: 0px 0px 1px white;
     }
@@ -275,7 +357,7 @@
         }
     }
 
-    .container .title {
+    .title {
         color: rgba(255, 255, 255, 0.788);
         text-align: center;
         margin-bottom: 10px;
@@ -292,7 +374,7 @@
     .content .content-overlay {
         background: rgba(0, 0, 0, 0.7);
         position: absolute;
-        height: 99%;
+        height: 100%;
         width: 100%;
         left: 0;
         top: 0;

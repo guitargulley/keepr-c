@@ -45,8 +45,8 @@ namespace keepr.Controllers
         {
             return db.GetAllBySearch(query);
         }
-        
         //GET BY KEEP ID
+        
         [Authorize]
         [HttpGet("{id}")]
         public Keep Get(int id)

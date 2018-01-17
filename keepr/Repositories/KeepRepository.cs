@@ -21,7 +21,7 @@ namespace keepr.Repositories
         {
             return _db.Query<Keep>("SELECT * FROM keeps WHERE public = true");
         }
-        
+
         public IEnumerable<Keep> GetAllByUserId(int id)
         {
             return _db.Query<Keep>($"SELECT * FROM keeps WHERE userid = {id}");
@@ -35,7 +35,28 @@ namespace keepr.Repositories
 
         internal IEnumerable<Keep> GetAllBySearch(string v)
         {
-            return _db.Query<Keep>($"SELECT * FROM KEEPS WHERE public = true AND name LIKE '%{v}%'");
+            var words = v.Split(' ');
+            var output = $"SELECT * FROM keeps WHERE public = true AND name LIKE ";
+            if (words.Length > 1)
+            {
+                for (var i = 0; i < words.Length; i++)
+                {
+                    var word = words[i];
+                    if (i == words.Length - 1)
+                    {
+                        output += $"'%{word}%'";
+                    }
+                    else
+                    {
+                        output += $"'%{word}%' OR name LIKE ";
+                    }
+                }
+            }
+            else
+            {
+                output += $"'%{v}%'";
+            }
+            return _db.Query<Keep>(output);
         }
 
         public Keep Add(Keep keep)
@@ -44,7 +65,7 @@ namespace keepr.Repositories
             int id = _db.ExecuteScalar<int>("INSERT INTO keeps (Name, ImageUrl, UserId, KeepCount, Viewed, Public)"
                         + " VALUES(@Name, @ImageUrl, @UserId, @KeepCount, @Viewed, @Public); SELECT LAST_INSERT_ID()", new
                         {
-                            keep.Name, 
+                            keep.Name,
                             keep.ImageUrl,
                             keep.UserId,
                             keep.KeepCount,
