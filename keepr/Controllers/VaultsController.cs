@@ -20,7 +20,6 @@ namespace keepr.Controllers
             db = vaultRepo;
             users = userRepo;
         }
-
         // GET VAULTS BY USER ID
         [Authorize]
         [HttpGet("users/{id}")]
@@ -28,9 +27,7 @@ namespace keepr.Controllers
         {
             var user= HttpContext.User;
             var id = user.Identity.Name;
-
             UserReturnModel activeUser = null;
-
             if(id != null)
             {
                 activeUser = users.GetUserById(id);
@@ -38,7 +35,6 @@ namespace keepr.Controllers
             var uid = activeUser.Id;
             return db.GetAllByUserId(uid);
         }
-
         // GET VAULT BY VAULT ID
         [Authorize]
         [HttpGet("{id}")]
@@ -47,7 +43,6 @@ namespace keepr.Controllers
             Console.WriteLine(id);
             return db.GetById(id);
         }
-
         // POST NEW VAULT
         [Authorize]
         [HttpPost]
@@ -55,19 +50,15 @@ namespace keepr.Controllers
         {
             var user= HttpContext.User;
             var id = user.Identity.Name;
-
             UserReturnModel activeUser = null;
-
             if(id != null)
             {
                 activeUser = users.GetUserById(id);
             }
             var uid = activeUser.Id;
             vault.Id = uid;
-
             return db.Add(vault);
         }
-
         // PUT EDIT VAULT
         [Authorize]
         [HttpPut("{id}")]
@@ -79,7 +70,6 @@ namespace keepr.Controllers
             }
             return null;
         }
-
         // DELETE VAULT
         [Authorize]
         [HttpDelete("{id}")]

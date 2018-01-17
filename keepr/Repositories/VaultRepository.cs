@@ -18,21 +18,20 @@ namespace keepr.Repositories
             _db = db;
         }
         
-        // Find One Find Many add update delete
+        // GET ALL VAULTS FOR A USER
         public IEnumerable<Vault> GetAllByUserId(int id)
         {
             return _db.Query<Vault>($"SELECT * FROM vaults WHERE userId = {id}");
         }
-
+        // GET VAULT BY VAULT ID
         public Vault GetById(int id)
         {
             Console.WriteLine("THIS IS THE GET REQUEST ID: ", id);
             return _db.QueryFirstOrDefault<Vault>($"SELECT * FROM vaults WHERE id = {id}", id);
         }
-
+        //CREATE NEW VAULT
         public Vault Add(Vault vault)
         {
-
             int id = _db.ExecuteScalar<int>("INSERT INTO vaults (Name, Description, UserId)"
                         + " VALUES(@Name, @Description, @UserId); SELECT LAST_INSERT_ID()", new
                         {
@@ -42,9 +41,8 @@ namespace keepr.Repositories
                         });
             vault.Id = id;
             return vault;
-
         }
-
+        //EDIT VAULT
         public Vault GetOneByIdAndUpdate(int id, Vault vault)
         {
             return _db.QueryFirstOrDefault<Vault>($@"
@@ -55,7 +53,7 @@ namespace keepr.Repositories
                 WHERE id = {id};
                 SELECT * FROM vaults WHERE id = {id};", vault);
         }
-
+        //DELETE VAULT
         public string FindByIdAndRemove(int id)
         {
             var success = _db.Execute($@"

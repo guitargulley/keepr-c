@@ -40,14 +40,13 @@ namespace keepr.Controllers
             var uid = activeUser.Id;
             return db.GetAllByUserId(uid);
         }
+        //GET BY SEARCH QUERY
         [HttpGet("search/{query}")]
         public IEnumerable<Keep> GetBySearch(string query)
         {
             return db.GetAllBySearch(query);
         }
         //GET BY KEEP ID
-        
-        [Authorize]
         [HttpGet("{id}")]
         public Keep Get(int id)
         {
@@ -55,40 +54,34 @@ namespace keepr.Controllers
             return db.GetById(id);
         }
 
-        // POST api/values
+        // POST CREATE NEW KEEP
         [Authorize]
         [HttpPost]
         public Keep Post([FromBody]Keep keep)
         {
             var user= HttpContext.User;
             var id = user.Identity.Name;
-
             UserReturnModel activeUser = null;
-
             if(id != null)
             {
                 activeUser = users.GetUserById(id);
             }
             var uid = activeUser.Id;
             keep.UserId = uid;
-            
-
             return db.Add(keep);
         }
-        // PUT api/values/5
+        // PUT EDIT KEEP
         [Authorize]
         [HttpPut("{id}")]
         public Keep Put(int id, [FromBody]Keep keep)
         {
-
             if (ModelState.IsValid)
             {
                 return db.GetOneByIdAndUpdate(id, keep);
             }
             return null;
         }
-
-        // DELETE api/values/5
+        // DELETE DELETE KEEP
         [Authorize]
         [HttpDelete("{id}")]
         public string Delete(int id)
