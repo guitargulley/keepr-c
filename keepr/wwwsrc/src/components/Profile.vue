@@ -276,8 +276,18 @@
     },
     mounted() {
       this.$store.dispatch('authenticate')
-      this.$store.dispatch('getVaults', { resource: 'vaults', id: this.$route.params.id })
-      this.$store.dispatch('getUserKeeps', { resource: 'keeps', id: this.$route.params.id })
+      this.$store.dispatch('getAll', { 
+        resource: 'vaults', 
+        endpoint: `users/${this.$route.params.id}`, 
+        data:{},
+        mutation:'setVaults'
+      })
+      this.$store.dispatch('getAll', { 
+        resource: 'keeps', 
+        endpoint: `users/${this.$route.params.id}`,
+        data:{},
+        mutation:'setUserKeeps'
+      })
     },
     computed: {
       activeUser() {
@@ -297,11 +307,16 @@
       createKeep() {
         this.newKeep.keepcount = 0
         this.newKeep.viewed = 0
-        // this.newKeep.userId = this.activeUser.id
-        this.$store.dispatch('createKeep', {
-          user: this.activeUser,
-          data: this.newKeep,
-          resource: "keeps"
+        this.$store.dispatch('create', {
+          resource: "keeps",
+          endpoint: "",
+          data: this.newKeep, 
+        })
+        this.$store.dispatch('getAll',{
+          resource:"keeps",
+          endpoint: `users/${this.activeUser.id}`,
+          data:{},
+          mutation: 'setUserKeeps'
         })
         this.newKeep = {
           name: "",
@@ -310,11 +325,21 @@
       },
       createVault() {
         this.newVault.userId = this.activeUser.id
-        this.$store.dispatch('createVault', {
-          user: this.activeUser,
+        this.$store.dispatch('create', {
+          resource: "vaults",
+          endpoint: "",
           data: this.newVault,
-          resource: "vaults"
+          action: "getAll",
+          resource2:"vaults",
+          endpoint2:`users/${this.activeUser.id}`,
+          mutation2: "setVaults"
         })
+        // this.$store.dispatch('getAll',{
+        //   resource: "vaults",
+        //   endpoint: `users/${this.activeUser.id}`,
+        //   data: {},
+        //   mutation: 'setVaults'
+        // })
         this.newVault = {
           name: "",
           description: ""
@@ -323,27 +348,43 @@
       addKeepToVault(id) {
         this.activeKeep.keepCount++
         this.activeKeep.viewed++
-        this.$store.dispatch('addToVault',
+        this.$store.dispatch('create',
           {
+            resource:"vaultKeeps",
+            endpoint:"",
             data:
               {
                 vaultId: id,
                 keepId: this.activeKeep.id,
                 userId: this.activeKeep.userId
               },
-            keep: this.activeKeep,
-            resource: 'vaultkeeps'
+            router: { path: '/vaults/' + id },
           })
-          this.$store.dispatch('updateKeep', {resource: "keeps", endpoint: this.activeKeep.id, keep:this.activeKeep})
+        this.$store.dispatch('update', { 
+          resource: "keeps", 
+          endpoint: this.activeKeep.id, 
+          data: this.activeKeep,
+          action:"getAll",
+          resource2: "keeps",
+          endpoint2: this.activeKeep.id,
+          mutation2: "setKeeps"
+        })
       },
       setActiveVault(id) {
-        this.$store.dispatch('getActiveVault', {
+        this.$store.dispatch('getOne', {
           resource: "vaults",
-          endpoint: id
+          endpoint: id,
+          data:{},
+          mutation:'setActiveVault'
         })
       },
       setActiveKeep(keep){
-        this.$store.dispatch('getKeep', { resource: "keeps", id: keep.id })
+        this.$store.dispatch('getOne', { 
+          resource: "keeps", 
+          endpoint: keep.id,
+          data:{},
+          mutation:'setActiveKeep' 
+        })
         this.newKeep = keep
       },
       editKeep(){
@@ -351,10 +392,30 @@
         this.newKeep.userId = this.activeKeep.userId
         this.newKeep.keepcount = this.activeKeep.keepcount
         this.newKeep.viewed = this.activeKeep.viewed
-        this.$store.dispatch('updateKeep', {resource:"keeps", endpoint:this.newKeep.id, keep: this.newKeep})
+        
+        this.$store.dispatch('update', {
+          resource:"keeps", 
+          endpoint:this.newKeep.id, 
+          data: this.newKeep,
+          action: 'getAll'
+        })
       },
       deleteKeep(){
-        this.$store.dispatch('deleteKeep', {resource:"keeps", endpoint:this.activeKeep.id, id:this.activeUser.id})
+        this.$store.dispatch('delete', {
+          resource:"keeps", 
+          endpoint:this.activeKeep.id, 
+          data:{},
+          action: "getAll",
+          resource2: "keeps",
+          endpoint2:`users/${this.activeUser.id}`,
+          mutation2: "setUserKeeps"
+        })
+        // this.$store.dispatch('getAll', {
+        //   resource:"keeps",
+        //   endpoint: `users/${this.activeUser.id}`,
+        //   data:{},
+        //   mutation: "setUserKeeps"
+        // })
       }
     }
   }

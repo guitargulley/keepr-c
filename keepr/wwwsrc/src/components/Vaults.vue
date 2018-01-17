@@ -190,6 +190,7 @@
 </template>
 
 <script>
+    import router from "../router"
     export default {
         name: 'vaults',
         data() {
@@ -215,39 +216,71 @@
             }
         },
         mounted() {
-            this.$store.dispatch('getActiveVault', {
+            this.$store.dispatch('getOne', {
                 resource: "vaults",
-                endpoint: this.$route.params.id
+                    endpoint: this.$route.params.id,
+                    data:{},
+                    mutation:"setActiveVault"
             }),
-                this.$store.dispatch('getVaultKeeps', {
+                this.$store.dispatch('getAll', {
                     resource: "vaultkeeps",
-                    endpoint: this.activeVault.id
+                    endpoint: this.$route.params.id,
+                    data:{},
+                    mutation:"setVaultKeeps"
                 })
 
         },
         methods: {
             getVaultKeeps() {
-                this.$store.dispatch('getVaultKeeps', {
+                this.$store.dispatch('getAll', {
                     resource: "vaultkeeps",
+                    endpoint: this.activeVault.id,
+                    data:{},
+                    mutation:"setVaultKeeps"
                 })
             },
             setActiveKeep(keep){
-                this.$store.dispatch('getKeep', { resource: "keeps", id: keep.id })
+                this.$store.dispatch('getOne', { 
+                    resource: "keeps", 
+                    endpoint: keep.id,
+                    data:{},
+                    mutation:"setActiveKeep" 
+                })
             },
             removeKeep(id) {
-                this.$store.dispatch('removeKeep', {
+                this.$store.dispatch('delete', {
                     resource: "vaultkeeps",
-                    endpoint2: id,
-                    endpoint: this.activeVault.id
-
+                    endpoint: `vaults/${this.activeVault.id}/keeps/${id}`,
+                    data:{},
+                    action:"getAll",
+                    resource2: "vaultkeeps",
+                    endpoint2: this.activeVault.id,
+                    mutation2: "setVaultKeeps"
                 })
+                // this.$store.dispatch('getVaultKeeps',{
+                //     resource: "vaultkeeps",
+                //     endpoint: this.activeVault.id,
+                //     data:{},
+                //     mutation:"setVaultKeeps"
+                // })
             },
             deleteVault() {
-                this.$store.dispatch('deleteVault', {
+                this.$store.dispatch('delete', {
                     resource: "vaults",
                     endpoint: this.activeVault.id,
-                    activeUser: this.activeUser.id
+                    data:{}, 
+                    action: "getAll",
+                    resource2: "vaults/users",
+                    endpoint2: this.activeUser.id,
+                    mutation2: "setVaults"    
                 })
+                // this.$store.dispatch('getAll',{
+                //     resource: "vaults/users",
+                //     endpoint: this.activeUser.id,
+                //     data:{},
+                //     mutation: "setVaults"
+                // })
+                router.push({ path: '/profile/' + this.activeUser.id })
             },
             editVault() {
                 var editedVault = {
@@ -255,18 +288,22 @@
                     description: this.vault.description,
                     userId: this.activeUser.id
                 }
-                this.$store.dispatch('editVault', {
+                this.$store.dispatch('update', {
                     resource: "vaults",
                     endpoint: this.activeVault.id,
-                    activeuser: this.activeUser.id,
-                    vault: editedVault
-
+                    data: editedVault,
+                    action: "getOne",
+                    resource2: "vaults",
+                    endpoint2: this.activeVault.id,
+                    mutation2: "setActiveVault"
                 })
             },
             getActiveVault() {
-                this.$store.dispatch('getActiveVault', {
+                this.$store.dispatch('getOne', {
                     resource: "vaults",
-                    endpoint: this.$route.params.id
+                    endpoint: this.$route.params.id,
+                    data:{},
+                    mutation:"setActiveVault"
                 })
                 this.vault = {
                     name: this.activeVault.name,

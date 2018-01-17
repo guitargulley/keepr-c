@@ -38,15 +38,17 @@ var store = new Vuex.Store({
             console.log('User:', user)
             state.activeUser = user
         },
-        setKeeps(state, payload) {
-            console.log('all keeps:', payload)
-            state.keeps = payload.data
+        setKeeps(state, data) {
+            debugger
+            console.log('all keeps:', data)
+            state.keeps = data
+            console.log(state.keeps)
         },
         setActiveKeep(state, data) {
             console.log('Active keep:', data)
             Vue.set(state, 'activeKeep', data)
         },
-        setActiveVault(state, data){
+        setActiveVault(state, data) {
             Vue.set(state, 'activeVault', data)
         },
         setVaults(state, data) {
@@ -64,7 +66,7 @@ var store = new Vuex.Store({
         //LOGIN
 
         login({ commit, dispatch }, payload) {
-            
+
             auth.post('account/login', payload)
                 .then(res => {
                     console.log("Successful login.")
@@ -113,153 +115,262 @@ var store = new Vuex.Store({
                     dispatch('authenticate')
                 })
         },
-        findKeeps({commit, dispatch}, payload){
-            api(payload.resource+"/search/"+payload.data, payload.data)
-                .then(res=>{
-                    commit('setKeeps', {data:res.data})
-                })
-        },
-        // GET all listings of one model
-        getKeeps({ commit, dispatch }, payload) {
-            api(`${payload.resource}`)
+        findKeeps({ commit, dispatch }, payload) {
+            debugger
+            api(payload.resource + "/search/" + payload.data, payload.data)
                 .then(res => {
-                    commit('setKeeps', { resource: payload.resource, data: res.data })
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-
-        // GET listing at specific id (for given model type)
-        getKeep({ commit, dispatch }, payload) {
-            api(`${payload.resource}/${payload.id}`)
-                .then(res => {
-                    commit('setActiveKeep', res.data)
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-
-        // POST new listing (for given model type)
-        createKeep({ commit, dispatch }, payload) {
-            api.post(`${payload.resource}`, payload.data)
-                .then(res => {
-                    dispatch('getKeeps', { resource: payload.resource })
-                    dispatch('getUserKeeps', {resource: payload.resource, id: payload.user.id})
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-
-        // PUT edits to self-posted listing (for given model type)
-
-        updateKeep({ commit, dispatch }, payload) {
-            api.put(`${payload.resource}/${payload.endpoint}`, payload.keep)
-                .then(res => {
-                    dispatch('getKeeps', { resource: payload.resource })
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        editVault({commit, dispatch}, payload){
-            api.put(`${payload.resource}/${payload.endpoint}`, payload.vault)
-                .then(res => {
-                    dispatch('getActiveVault', payload)
+                    commit('setKeeps', res.data)
                 })
                 .catch(err=>{
                     commit('handleError', err)
                 })
         },
+        // GET all listings of one model
+        // getKeeps({ commit, dispatch }, payload) {
+        //     api(`${payload.resource}`)
+        //         .then(res => {
+        //             commit('setKeeps', { resource: payload.resource, data: res.data })
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
 
-        // DELETE self-posted listing (for given model type)
+        // // GET listing at specific id (for given model type)
+        // getKeep({ commit, dispatch }, payload) {
+        //     api(`${payload.resource}/${payload.id}`)
+        //         .then(res => {
+        //             commit('setActiveKeep', res.data)
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
 
-        deleteKeep({ commit, dispatch }, payload) {
-            
-            api.delete(`${payload.resource}/${payload.endpoint}`)
+        // // POST new listing (for given model type)
+        // createKeep({ commit, dispatch }, payload) {
+        //     api.post(`${payload.resource}`, payload.data)
+        //         .then(res => {
+        //             dispatch('getKeeps', { resource: payload.resource })
+        //             dispatch('getUserKeeps', { resource: payload.resource, id: payload.user.id })
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+
+        // // PUT edits to self-posted listing (for given model type)
+
+        // updateKeep({ commit, dispatch }, payload) {
+        //     api.put(`${payload.resource}/${payload.endpoint}`, payload.keep)
+        //         .then(res => {
+        //             dispatch('getKeeps', { resource: payload.resource })
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // editVault({ commit, dispatch }, payload) {
+        //     api.put(`${payload.resource}/${payload.endpoint}`, payload.vault)
+        //         .then(res => {
+        //             dispatch('getActiveVault', payload)
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+
+        // // DELETE self-posted listing (for given model type)
+
+        // deleteKeep({ commit, dispatch }, payload) {
+
+        //     api.delete(`${payload.resource}/${payload.endpoint}`)
+        //         .then(res => {
+        //             dispatch('getUserKeeps', { resource: payload.resource, id: payload.id })
+
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // getUserKeeps({ commit, dispatch }, payload) {
+
+        //     api(`${payload.resource}/users/${payload.id}`, payload.id)
+        //         .then(res => {
+        //             commit('setUserKeeps', res.data)
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // getVaults({ commit, dispatch }, payload) {
+        //     api(`${payload.resource}/users/${payload.id}`, payload.id)
+        //         .then(res => {
+        //             commit('setVaults', res.data)
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // createVault({ commit, dispatch }, payload) {
+        //     api.post(payload.resource, payload.data)
+        //         .then(res => {
+        //             dispatch('getVaults', { resource: payload.resource, id: payload.user.id })
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // addToVault({ commit, dispatch }, payload) {
+        //     api.post(payload.resource, payload.data)
+        //         .then(res => {
+        //             payload.resource = "keeps"
+        //             payload.endpoint = payload.keep.id
+        //             dispatch('updateKeep', payload)
+        //             router.push({ path: '/vaults/' + payload.data.vaultId })
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
+        // removeKeep({ commit, dispatch }, payload) {
+        //     api.delete(payload.resource + "/vaults/" + payload.endpoint + "/keeps/" + payload.endpoint2)
+        //         .then(res => {
+        //             dispatch('getVaultKeeps', payload)
+        //         })
+        // },
+        // getVaultKeeps({ commit, dispatch }, payload) {
+        //     debugger
+        //     api(payload.resource + "/" + payload.endpoint)
+        //         .then(res => {
+        //             commit('setVaultKeeps', res.data)
+        //         })
+        // },
+        // getActiveVault({ commit, dispatch }, payload) {
+
+        //     api(payload.resource + "/" + payload.endpoint)
+        //         .then(res => {
+        //             commit('setActiveVault', res.data)
+        //             payload.resource = "vaultKeeps"
+        //             payload.endpoint = res.data.id
+        //             dispatch('getVaultKeeps', payload)
+        //         })
+        // },
+        // deleteVault({ commit, dispatch }, payload) {
+        //     api.delete(payload.resource + "/" + payload.endpoint, payload.endpoint)
+        //         .then(res => {
+        //             payload.id = payload.endpoint
+        //             dispatch("getVaults", payload)
+        //             router.push({ path: '/profile/' + payload.activeUser })
+        //         })
+        //         .catch(err => {
+        //             commit("handleError", err)
+        //         })
+        // },
+        // CONDENSED ROUTES
+        create({ commit, dispatch }, payload) {
+            api.post(`${payload.resource}/${payload.endpoint}`, payload.data)
                 .then(res => {
-                    dispatch('getUserKeeps', { resource: payload.resource, id:payload.id})
-                    
+                    if (payload.action) {
+                        payload.resource = payload.resource2
+                        payload.endpoint = payload.endpoint2
+                        payload.mutation = payload.mutation2
+                        dispatch(payload.action, payload)
+                    }
+                    if (payload.mutation) {
+                        commit(payload.mutation, res.data)
+                    }
+                    if (payload.router) {
+                        router.push(payload.router)
+                    }
                 })
                 .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        getUserKeeps({ commit, dispatch }, payload) {
-            
-            api(`${payload.resource}/users/${payload.id}`, payload.id)
-                .then(res => {
-                    commit('setUserKeeps', res.data)
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        getVaults({ commit, dispatch }, payload) {
-            api(`${payload.resource}/users/${payload.id}`, payload.id)
-                .then(res => {
-                    commit('setVaults', res.data)
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        createVault({ commit, dispatch }, payload) {
-            api.post(payload.resource, payload.data)
-                .then(res => {
-                    dispatch('getVaults', {resource:payload.resource, id:payload.user.id})
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        addToVault({ commit, dispatch }, payload) {
-            api.post(payload.resource, payload.data)
-                .then(res => {
-                    payload.resource = "keeps"
-                    payload.endpoint = payload.keep.id
-                    dispatch('updateKeep', payload)
-                    router.push({path: '/vaults/' + payload.data.vaultId})
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
-        removeKeep({commit, dispatch}, payload){
-            api.delete(payload.resource + "/vaults/" + payload.endpoint + "/keeps/" + payload.endpoint2)
-                .then(res => {
-                    dispatch('getVaultKeeps', payload)
-                })
-        },
-        getVaultKeeps({ commit, dispatch }, payload) {
-            api(payload.resource + "/" + payload.endpoint)
-                .then(res => {
-                    commit('setVaultKeeps', res.data)
-                })
-        },
-        getActiveVault({ commit, dispatch }, payload) {
-            
-            api(payload.resource + "/" + payload.endpoint)
-                .then(res => {
-                    commit('setActiveVault', res.data)
-                    payload.resource = "vaultKeeps"
-                    payload.endpoint = res.data.id
-                    dispatch('getVaultKeeps', payload)
-                })
-        },
-        deleteVault({commit, dispatch}, payload){
-            api.delete(payload.resource + "/" + payload.endpoint, payload.endpoint)
-                .then(res =>{
-                    payload.id = payload.endpoint
-                    dispatch("getVaults", payload)
-                    router.push({path: '/profile/'+ payload.activeUser})
-                })
-                .catch(err =>{
                     commit("handleError", err)
                 })
+        },
+        update({ commit, dispatch }, payload) {
+            
+            api.put(`${payload.resource}/${payload.endpoint}`, payload.data)
+                .then(res => {
+                    if (payload.action) {
+                        payload.resource = payload.resource2
+                        payload.endpoint = payload.endpoint2
+                        payload.mutation = payload.mutation2
+                        dispatch(payload.action, payload)
+                    }
+                    if (payload.mutation) {
+                        commit(payload.mutation, res.data)
+                    }
+                    if (payload.router) {
+                        router.push(payload.router)
+                    }
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
+        },
+        getAll({ commit, dispatch }, payload) {
+            
+            api(`${payload.resource}/${payload.endpoint}`,payload.endpoint)
+                .then(res => {
+                    if (payload.action) {
+                        payload.resource = payload.resource2
+                        payload.endpoint = payload.endpoint2
+                        payload.mutation = payload.mutation2
+                        dispatch(payload.action, payload)
+                    }
+                    if (payload.mutation) {
+                        commit(payload.mutation, res.data)
+                    }
+                    if (payload.router) {
+                        router.push(payload.router)
+                    }
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
+        },
+        getOne({ commit, dispatch }, payload) {
+            api(`${payload.resource}/${payload.endpoint}`)
+                .then(res => {
+                    if (payload.action) {
+                        payload.resource = payload.resource2
+                        payload.endpoint = payload.endpoint2
+                        payload.mutation = payload.mutation2
+                        dispatch(payload.action, payload)
+                    }
+                    if (payload.mutation) {
+                        commit(payload.mutation, res.data)
+                    }
+                    if (payload.router) {
+                        router.push(payload.router)
+                    }
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
+        },
+        delete({ commit, dispatch }, payload) {
+            api.delete(`${payload.resource}/${payload.endpoint}`, payload.endpoint)
+                .then(res => {
+                    if (payload.action) {
+                        payload.resource = payload.resource2
+                        payload.endpoint = payload.endpoint2
+                        payload.mutation = payload.mutation2
+                        dispatch(payload.action, payload)
+                    }
+                    if (payload.mutation) {
+                        commit(payload.mutation, res.data)
+                    }
+                    if (payload.router) {
+                        router.push(payload.router)
+                    }
+                })
+                .catch(err => {
+                    commit('handleError', err)
+                })
         }
+
 
 
     }
