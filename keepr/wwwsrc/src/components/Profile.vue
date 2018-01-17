@@ -286,7 +286,7 @@
       createKeep() {
         this.newKeep.keepcount = 0
         this.newKeep.viewed = 0
-        this.newKeep.userId = this.activeUser.id
+        // this.newKeep.userId = this.activeUser.id
         this.$store.dispatch('createKeep', {
           user: this.activeUser,
           data: this.newKeep,

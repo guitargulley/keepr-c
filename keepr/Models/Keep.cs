@@ -9,7 +9,7 @@ namespace keepr.Models
         public string ImageUrl { get; set; }
         [MaxLength(80)]
         public string Name { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public int KeepCount { get; set; }
         public int Viewed { get; set; }
         public bool Public { get; set; }

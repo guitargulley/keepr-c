@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using keepr.Models;
 using keepr.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.Controllers
@@ -11,20 +13,34 @@ namespace keepr.Controllers
     [Route("api/[controller]")]
     public class VaultsController : Controller
     {
+        private readonly UserRepository users;
         private readonly VaultRepository db;
-        public VaultsController(VaultRepository vaultRepo)
+        public VaultsController(VaultRepository vaultRepo, UserRepository userRepo)
         {
             db = vaultRepo;
+            users = userRepo;
         }
 
-        // GET api/values
+        // GET VAULTS BY USER ID
+        [Authorize]
         [HttpGet("users/{id}")]
-        public IEnumerable<Vault> GetbyUserID(int id)
+        public IEnumerable<Vault> GetbyUserID()
         {
-            return db.GetAllByUserId(id);
+            var user= HttpContext.User;
+            var id = user.Identity.Name;
+
+            UserReturnModel activeUser = null;
+
+            if(id != null)
+            {
+                activeUser = users.GetUserById(id);
+            }
+            var uid = activeUser.Id;
+            return db.GetAllByUserId(uid);
         }
 
-        // GET api/values/5
+        // GET VAULT BY VAULT ID
+        [Authorize]
         [HttpGet("{id}")]
         public Vault Get(int id)
         {
@@ -32,14 +48,28 @@ namespace keepr.Controllers
             return db.GetById(id);
         }
 
-        // POST api/values
+        // POST NEW VAULT
+        [Authorize]
         [HttpPost]
         public Vault Post([FromBody]Vault vault)
         {
+            var user= HttpContext.User;
+            var id = user.Identity.Name;
+
+            UserReturnModel activeUser = null;
+
+            if(id != null)
+            {
+                activeUser = users.GetUserById(id);
+            }
+            var uid = activeUser.Id;
+            vault.Id = uid;
+
             return db.Add(vault);
         }
 
-        // PUT api/values/5
+        // PUT EDIT VAULT
+        [Authorize]
         [HttpPut("{id}")]
         public Vault Put(int id, [FromBody]Vault vault)
         {
@@ -50,7 +80,8 @@ namespace keepr.Controllers
             return null;
         }
 
-        // DELETE api/values/5
+        // DELETE VAULT
+        [Authorize]
         [HttpDelete("{id}")]
         public string Delete(int id)
         {
