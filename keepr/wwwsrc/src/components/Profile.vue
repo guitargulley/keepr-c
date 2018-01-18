@@ -157,7 +157,10 @@
                           <li v-for="c in categories"><a @click="changeCategory(c)" :name="c":value="c">{{c}}</a></li>
                         </ul>
                       </div>
-                    
+                      <div class="form-group">
+                          <label>
+                            <input type="checkbox" value="true" v-model='newKeep.public'>MAKE PUBLIC</label>
+                        </div>
               
               <div class="form-group">
                 <button class="btn btn-submit btn-success" @click="editKeep" data-dismiss="modal" type="submit">Save Changes</button>
@@ -240,7 +243,7 @@
           </button>
         </h1>
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-lg-3 well keep-div" v-for="keep in userKeeps">
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 well keep-div" v-for="keep in userKeeps">
             <div class="container">
               <div class="content">
                 <div class="content-overlay"></div>
@@ -350,7 +353,9 @@
         })
         this.newKeep = {
           name: "",
-          imageurl: ""
+          imageurl: "",
+          public: false,
+          category: ""
         }
       },
       updateKeepViews(keep) {

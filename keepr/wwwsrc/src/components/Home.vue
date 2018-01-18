@@ -177,7 +177,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-6  col-lg-3 well keep-div" v-for="keep in keeps">
+        <div class="col-xs-12 col-sm-6  col-md-4 col-lg-3 well keep-div" v-for="keep in keeps">
           <div class="container" @mouseover="hoverHandle(keep.id)">
 
             <div class="content">
@@ -356,15 +356,6 @@
           viewed: keep.viewed,
           public: keep.public
         }
-        this.$store.dispatch('update', {
-          resource: "keeps",
-          endpoint: keep.id,
-          data: updatedKeep,
-          action: "getAll",
-          resource2: "keeps",
-          endpoint2: "",
-          mutation2: "setKeeps"
-        })
       },
     }
   }

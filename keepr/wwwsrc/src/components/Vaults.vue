@@ -154,7 +154,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12  col-lg-3 well keep-div" @mouseover="setActiveKeep(keep)" v-for="keep in vaultKeeps">
+            <div class="col-xs-12  col-sm-6 col-md-4 col-lg-3 well keep-div" @mouseover="setActiveKeep(keep)" v-for="keep in vaultKeeps">
                 <div class="container">
                     <div class="content">
                         <div class="content-overlay"></div>
