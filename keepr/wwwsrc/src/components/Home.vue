@@ -120,11 +120,11 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-xs-6">
+              <div class="col-xs-12 col-sm-6">
                 <h4>{{activeKeep.name}}</h4>
-                <img :src="activeKeep.imageUrl" alt="">
+                <img :src="activeKeep.imageUrl" alt="" img-responsive>
               </div>
-              <div class="col-xs-6">
+              <div class="col-xs-12 col-sm-6">
                 <div class="row" style="margin-top: 7rem">
                   <div class="col-xs-2">
                     <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button v-if="activeUser"class="btn keep-btn pull-left" data-toggle="modal" data-target="#add-to-vault" data-dismiss="modal">
+            <button v-if="activeUser" class="btn keep-btn pull-left" data-toggle="modal" data-target="#add-to-vault" data-dismiss="modal">
               <i class="fa fa-check" aria-hidden="true"></i>Keep It</button>
             <button type="button" class="btn close-btn pull-right" data-dismiss="modal">Close</button>
           </div>
@@ -153,13 +153,13 @@
       </div>
     </div>
 
-    <h1 style="text-shadow:0px 0px 1px black; color:white;font-weight:bold; font-size:4em">WELCOME TO keepR!</h1>
+    <h1 class="title-page-header">WELCOME TO keepR!</h1>
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <form id="search-keeps" class="form-inline" @submit.prevent="findKeepsBy">
             <div class="search-form-group" style=" margin-bottom:10px;">
-              <input type="text" name="text" style="width:50%;" class="form-control" placeholder="Find a Keep" v-model="search">
+              <input type="text" name="text" class="form-control search" placeholder="Find a Keep" v-model="search">
               <button class="btn btn-submit search-btn" title="Search" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
@@ -168,9 +168,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6 col-sm-4  col-lg-3 well" v-for="keep in keeps">
+        <div class="col-xs-12 col-sm-6  col-lg-3 well keep-div" v-for="keep in keeps">
           <div class="container" @mouseover="hoverHandle(keep.id)">
-            
+
             <div class="content">
               <div class="content-overlay"></div>
               <img class="content-image" :src="keep.imageUrl" alt="">
@@ -197,20 +197,12 @@
               </div>
             </div>
           </div>
-          <div>
-              <h2 class="title">{{keep.name}}</h2>
-            <button class="btn eye-2">
-              <i class="fa fa-eye" title="View Keep" aria-hidden="true" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view">:{{keep.viewed}}</i>
-            </button>
-            <button v-if="activeUser"class="btn check-2">
-              <i class="fa fa-check" title="Add Keep To A Vault" aria-hidden="true" data-toggle="modal" data-target="#add-to-vault">:{{keep.keepCount}}</i>
-            </button>
-            <button class="btn check-2" v-else>
-              <i class="fa fa-check" title="Add Keep To A Vault" data-toggle="modal" data-target="#login" aria-hidden="true">:{{keep.keepCount}}</i>
-            </button>
-            <button v-if="activeUser"class="btn share-btn-2">
-              <i class="fa fa-share-alt" data-toggle="modal" data-target="#share" aria-hidden="true"></i>
-            </button>
+          <div class="bottom-buttons">
+            <h2 class="title text-responsive">{{keep.name}}</h2>
+            <div class="bottom-buttons-position">
+              <i class="fa fa-eye eye-2" title="View Keep" aria-hidden="true"  >:{{keep.viewed}}</i>
+              <i class="fa fa-check check-2" title="Add Keep To A Vault"  aria-hidden="true">:{{keep.keepCount}}</i>
+            </div>
           </div>
         </div>
       </div>
@@ -235,11 +227,11 @@
     },
     mounted() {
       this.$store.dispatch('authenticate')
-      this.$store.dispatch('getAll', { 
-          resource: "keeps",
-          endpoint: "",
-          data:{},
-          mutation: "setKeeps"
+      this.$store.dispatch('getAll', {
+        resource: "keeps",
+        endpoint: "",
+        data: {},
+        mutation: "setKeeps"
       })
 
     },
@@ -266,14 +258,14 @@
         }
       },
       findKeepsBy() {
-        if(this.search != ""){
+        if (this.search != "") {
           this.$store.dispatch('findKeeps', { resource: "keeps", data: this.search })
         }
-        else{
+        else {
           this.$store.dispatch('getAll', {
             resource: "keeps",
             endpoint: "",
-            data:{},
+            data: {},
             mutation: "setKeeps"
           })
         }
@@ -282,22 +274,22 @@
         this.$store.dispatch('getAll', {
           resource: "keeps",
           endpoint: "",
-          data:{},
+          data: {},
           mutation: "setKeeps"
         })
       },
       hoverHandle(id) {
-        this.$store.dispatch('getOne', { 
-          resource: "keeps", 
+        this.$store.dispatch('getOne', {
+          resource: "keeps",
           endpoint: id,
-          data:{},
+          data: {},
           mutation: "setActiveKeep"
         })
-        this.$store.dispatch('getAll', { 
-          resource: 'vaults', 
+        this.$store.dispatch('getAll', {
+          resource: 'vaults',
           endpoint: `users/${this.activeUser.id}`,
-          data:{},
-          mutation: "setVaults" 
+          data: {},
+          mutation: "setVaults"
         })
       },
       addKeepToVault(id) {
@@ -305,8 +297,8 @@
         this.activeKeep.viewed++
         this.$store.dispatch('create',
           {
-            resource:"vaultKeeps",
-            endpoint:"",
+            resource: "vaultKeeps",
+            endpoint: "",
             data:
               {
                 vaultId: id,
@@ -315,11 +307,11 @@
               },
             router: { path: '/vaults/' + id }
           })
-        this.$store.dispatch('update', { 
-          resource: "keeps", 
-          endpoint: this.activeKeep.id, 
+        this.$store.dispatch('update', {
+          resource: "keeps",
+          endpoint: this.activeKeep.id,
           data: this.activeKeep,
-          action:"getAll",
+          action: "getAll",
           resource2: "keeps",
           endpoint2: "",
           mutation2: "setKeeps"
@@ -336,9 +328,9 @@
           viewed: keep.viewed,
           public: keep.public
         }
-        this.$store.dispatch('update', { 
+        this.$store.dispatch('update', {
           resource: "keeps",
-          endpoint: keep.id, 
+          endpoint: keep.id,
           data: updatedKeep,
           action: "getAll",
           resource2: "keeps",
@@ -352,6 +344,21 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+  .search {
+    width: 50%;
+  }
+
+  .title-page-header {
+    text-shadow: 0px 0px 1px black;
+    color: white;
+    font-weight: bold;
+    font-size: 4em;
+  }
+
+  .keep-div {
+    height: 600px;
+  }
+
   #keep-view .modal-content {
     background-color: rgb(49, 73, 68);
     color: white;
@@ -399,17 +406,30 @@
     margin-bottom: 10em;
     background-color: rgba(233, 150, 122, 0.493)
   }
+  
   .share-btn-2 {
     background-color: rgba(140, 140, 153, 0.801);
     color: rgba(245, 245, 245, 0.445);
+    width: 10%;
+    height: 30px;
+    padding-top: 8px;
+    border-radius: 5px;
   }
 
   .eye-2 {
-    background-color: rgba(134, 226, 233, 0.521)
+    background-color: rgba(134, 226, 233, 0.521);
+    width: 15%;
+    height: 30px;
+    padding-top: 8px;
+    border-radius: 5px;
   }
 
   .check-2 {
-    background-color: rgba(233, 150, 122, 0.493)
+    background-color: rgba(233, 150, 122, 0.493);
+    width: 15%;
+    height: 30px;
+    padding-top: 8px;
+    border-radius: 5px;
   }
 
   .search-btn {
@@ -431,6 +451,25 @@
       display: block;
       width: 100%;
     }
+    .keep-div {
+      height: 400px;
+    }
+    .title {
+      font-size: 1em;
+    }
+    .content-details button {
+      margin-bottom: 20px
+    }
+    .title-page-header {
+      text-shadow: 0px 0px 1px black;
+      color: white;
+      font-weight: bold;
+      font-size: 3em;
+    }
+    .search{
+      width:100%
+    }
+
   }
 
   @media screen and (min-width: 900px) {
@@ -439,7 +478,7 @@
     }
   }
 
-   .title {
+  .title {
     color: rgba(255, 255, 255, 0.788);
     text-align: center;
     margin-bottom: 10px;
@@ -474,6 +513,7 @@
 
   .content-image {
     width: 100%;
+    max-height: 500px;
   }
 
   .content-details {

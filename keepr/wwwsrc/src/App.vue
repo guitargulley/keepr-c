@@ -160,6 +160,8 @@
   }
   .navbar{
     background-color:rgba(0, 0, 0, 0.363);
+    margin-left:-15px;
+    margin-right: -15px;
     
   }
   .home-btn{
@@ -307,6 +309,7 @@
 
   .content-image {
     width: 100%;
+    max-height: 500px;
   }
 
   .content-details {

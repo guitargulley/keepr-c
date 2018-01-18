@@ -62,21 +62,18 @@ var store = new Vuex.Store({
         },
         resetState(state, data) {
             state.error = {},
-            state.activeUser = {},
-            state.keeps = [],
-            state.activeKeep = {},
-            state.userKeeps = [],
-            state.userVaults = [],
-            state.activeVault = {},
-            state.vaultKeeps = []
-    }
-},
+                state.activeUser = {},
+                state.keeps = [],
+                state.activeKeep = {},
+                state.userKeeps = [],
+                state.userVaults = [],
+                state.activeVault = {},
+                state.vaultKeeps = []
+        }
+    },
     actions: {
-
         //LOGIN
-
         login({ commit, dispatch }, payload) {
-
             auth.post('account/login', payload)
                 .then(res => {
                     console.log("Successful login.")
@@ -86,11 +83,8 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
-
         //REGISTER
-
         register({ commit, dispatch }, payload) {
-
             auth.post('account/register', payload)
                 .then(res => {
                     console.log(res)
@@ -100,9 +94,7 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
-
         //AUTHENTICATE
-
         authenticate({ commit, dispatch }) {
             auth('account/authenticate')
                 .then(res => {
@@ -112,9 +104,7 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
-
         //LOGOUT
-
         logout({ commit, dispatch }) {
             auth.delete('account/logout')
                 .then(() => {
@@ -136,148 +126,6 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         },
-        // GET all listings of one model
-        // getKeeps({ commit, dispatch }, payload) {
-        //     api(`${payload.resource}`)
-        //         .then(res => {
-        //             commit('setKeeps', { resource: payload.resource, data: res.data })
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-
-        // // GET listing at specific id (for given model type)
-        // getKeep({ commit, dispatch }, payload) {
-        //     api(`${payload.resource}/${payload.id}`)
-        //         .then(res => {
-        //             commit('setActiveKeep', res.data)
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-
-        // // POST new listing (for given model type)
-        // createKeep({ commit, dispatch }, payload) {
-        //     api.post(`${payload.resource}`, payload.data)
-        //         .then(res => {
-        //             dispatch('getKeeps', { resource: payload.resource })
-        //             dispatch('getUserKeeps', { resource: payload.resource, id: payload.user.id })
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-
-        // // PUT edits to self-posted listing (for given model type)
-
-        // updateKeep({ commit, dispatch }, payload) {
-        //     api.put(`${payload.resource}/${payload.endpoint}`, payload.keep)
-        //         .then(res => {
-        //             dispatch('getKeeps', { resource: payload.resource })
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // editVault({ commit, dispatch }, payload) {
-        //     api.put(`${payload.resource}/${payload.endpoint}`, payload.vault)
-        //         .then(res => {
-        //             dispatch('getActiveVault', payload)
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-
-        // // DELETE self-posted listing (for given model type)
-
-        // deleteKeep({ commit, dispatch }, payload) {
-
-        //     api.delete(`${payload.resource}/${payload.endpoint}`)
-        //         .then(res => {
-        //             dispatch('getUserKeeps', { resource: payload.resource, id: payload.id })
-
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // getUserKeeps({ commit, dispatch }, payload) {
-
-        //     api(`${payload.resource}/users/${payload.id}`, payload.id)
-        //         .then(res => {
-        //             commit('setUserKeeps', res.data)
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // getVaults({ commit, dispatch }, payload) {
-        //     api(`${payload.resource}/users/${payload.id}`, payload.id)
-        //         .then(res => {
-        //             commit('setVaults', res.data)
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // createVault({ commit, dispatch }, payload) {
-        //     api.post(payload.resource, payload.data)
-        //         .then(res => {
-        //             dispatch('getVaults', { resource: payload.resource, id: payload.user.id })
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // addToVault({ commit, dispatch }, payload) {
-        //     api.post(payload.resource, payload.data)
-        //         .then(res => {
-        //             payload.resource = "keeps"
-        //             payload.endpoint = payload.keep.id
-        //             dispatch('updateKeep', payload)
-        //             router.push({ path: '/vaults/' + payload.data.vaultId })
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
-        // removeKeep({ commit, dispatch }, payload) {
-        //     api.delete(payload.resource + "/vaults/" + payload.endpoint + "/keeps/" + payload.endpoint2)
-        //         .then(res => {
-        //             dispatch('getVaultKeeps', payload)
-        //         })
-        // },
-        // getVaultKeeps({ commit, dispatch }, payload) {
-        //     debugger
-        //     api(payload.resource + "/" + payload.endpoint)
-        //         .then(res => {
-        //             commit('setVaultKeeps', res.data)
-        //         })
-        // },
-        // getActiveVault({ commit, dispatch }, payload) {
-
-        //     api(payload.resource + "/" + payload.endpoint)
-        //         .then(res => {
-        //             commit('setActiveVault', res.data)
-        //             payload.resource = "vaultKeeps"
-        //             payload.endpoint = res.data.id
-        //             dispatch('getVaultKeeps', payload)
-        //         })
-        // },
-        // deleteVault({ commit, dispatch }, payload) {
-        //     api.delete(payload.resource + "/" + payload.endpoint, payload.endpoint)
-        //         .then(res => {
-        //             payload.id = payload.endpoint
-        //             dispatch("getVaults", payload)
-        //             router.push({ path: '/profile/' + payload.activeUser })
-        //         })
-        //         .catch(err => {
-        //             commit("handleError", err)
-        //         })
-        // },
         // CONDENSED ROUTES
         create({ commit, dispatch }, payload) {
             api.post(`${payload.resource}/${payload.endpoint}`, payload.data)
@@ -381,9 +229,6 @@ var store = new Vuex.Store({
                     commit('handleError', err)
                 })
         }
-
-
-
     }
 })
 

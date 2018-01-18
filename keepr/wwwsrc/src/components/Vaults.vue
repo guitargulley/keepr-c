@@ -25,45 +25,45 @@
             </div>
         </div>
         <div id="keep-view" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">keep Deetz</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">keep Deetz</h4>
                     </div>
                     <div class="modal-body">
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <h4>{{activeKeep.name}}</h4>
-                          <img :src="activeKeep.imageUrl" alt="">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <h4>{{activeKeep.name}}</h4>
+                                <img :src="activeKeep.imageUrl" alt="">
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="row" style="margin-top: 7rem">
+                                    <div class="col-xs-2">
+                                        <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <h4 class="text-left">Viewed: {{activeKeep.viewed +1}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <h4 class="text-left">Keeps: {{activeKeep.keepCount}}</h4>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-6">
-                          <div class="row" style="margin-top: 7rem">
-                            <div class="col-xs-2">
-                              <i class="fa fa-eye fa-2x text-warning" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-xs-10">
-                              <h4 class="text-left">Viewed: {{activeKeep.viewed +1}}</h4>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
-                            </div>
-                            <div class="col-xs-10">
-                              <h4 class="text-left">Keeps: {{activeKeep.keepCount}}</h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn close-btn pull-right" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn close-btn pull-right" data-dismiss="modal">Close</button>
                     </div>
-                  </div>
                 </div>
-              </div>
+            </div>
+        </div>
         <div id="share" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -74,7 +74,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-xs-12 col-md-6">
+                            <div class="col-xs-12 text-center">
                                 <h4>Sharing this Keep will charge your credit card $1.99</h4>
                                 <h5>To continue click
                                     <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#just-jokin">here</a> to add your credit card.</h5>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-xs-12 col-md-6">
+                            <div class="col-xs-12 text-center">
                                 <h4>Just messin with you. the share feature is currently under construction. Check back later!</h4>
                             </div>
 
@@ -154,14 +154,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6  col-lg-3 well" @mouseover="setActiveKeep(keep)" v-for="keep in vaultKeeps">
+            <div class="col-xs-12  col-lg-3 well keep-div" @mouseover="setActiveKeep(keep)" v-for="keep in vaultKeeps">
                 <div class="container">
                     <div class="content">
                         <div class="content-overlay"></div>
-                        <img class="content-image" :src="keep.imageUrl" alt="">
+                        <img class="content-image image-responsive" :src="keep.imageUrl" alt="">
                         <div class="content-details fadeIn-bottom">
-                            <button class="btn eye-btn">
-                                <i class="fa fa-eye fa-2x" title="View Keep" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
+                            <button class="btn eye-btn" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view" >
+                                <i class="fa fa-eye fa-2x" title="View Keep" aria-hidden="true"></i>
                             </button>
                             <button class="btn delete-btn" title="Remove from Vault" @click="removeKeep(keep.id)">
                                 <i class="fa fa-minus fa-2x" aria-hidden="true"></i>
@@ -172,17 +172,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
+                <div class="text-center bottom-buttons">
                     <h2 class="title">{{keep.name}}</h2>
-                    <button class="btn eye-btn-2">
-                        <i class="fa fa-eye " title="View Keep" data-toggle="modal" data-target="#keep-view"aria-hidden="true"></i>
-                    </button>
-                    <button class="btn delete-btn-2" title="Remove from Vault" @click="removeKeep(keep.id)">
-                        <i class="fa fa-minus " aria-hidden="true"></i>
-                    </button>
-                    <button class="btn share-btn-2" data-toggle="modal" data-target="#share">
-                        <i class="fa fa-share-alt " title="Share Keep" aria-hidden="true"></i>
-                    </button>
+                    <div>
+                        <i class="fa fa-eye eye-btn-2" title="View Keep" aria-hidden="true">: {{keep.viewed}}</i>
+                        <i class="fa fa-check check-2" title="Add Keep To A Vault" aria-hidden="true">:{{keep.keepCount}}</i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,22 +206,22 @@
             vaultKeeps() {
                 return this.$store.state.vaultKeeps
             },
-            activeKeep(){
+            activeKeep() {
                 return this.$store.state.activeKeep
             }
         },
         mounted() {
             this.$store.dispatch('getOne', {
                 resource: "vaults",
-                    endpoint: this.$route.params.id,
-                    data:{},
-                    mutation:"setActiveVault"
+                endpoint: this.$route.params.id,
+                data: {},
+                mutation: "setActiveVault"
             }),
                 this.$store.dispatch('getAll', {
                     resource: "vaultkeeps",
                     endpoint: this.$route.params.id,
-                    data:{},
-                    mutation:"setVaultKeeps"
+                    data: {},
+                    mutation: "setVaultKeeps"
                 })
 
         },
@@ -235,51 +230,60 @@
                 this.$store.dispatch('getAll', {
                     resource: "vaultkeeps",
                     endpoint: this.activeVault.id,
-                    data:{},
-                    mutation:"setVaultKeeps"
+                    data: {},
+                    mutation: "setVaultKeeps"
                 })
             },
-            setActiveKeep(keep){
-                this.$store.dispatch('getOne', { 
-                    resource: "keeps", 
+            setActiveKeep(keep) {
+                this.$store.dispatch('getOne', {
+                    resource: "keeps",
                     endpoint: keep.id,
-                    data:{},
-                    mutation:"setActiveKeep" 
+                    data: {},
+                    mutation: "setActiveKeep"
+                })
+            },
+            updateKeepViews(keep) {
+                debugger
+                keep.viewed++
+                var updatedKeep = {
+                    name: keep.name,
+                    imageUrl: keep.imageUrl,
+                    userId: keep.userId,
+                    keepCount: keep.keepCount,
+                    viewed: keep.viewed,
+                    public: keep.public
+                }
+                this.$store.dispatch('update', {
+                    resource: "keeps",
+                    endpoint: keep.id,
+                    data: updatedKeep,
+                    action: "getAll",
+                    resource2: "keeps",
+                    endpoint2: "",
+                    mutation2: "setKeeps"
                 })
             },
             removeKeep(id) {
                 this.$store.dispatch('delete', {
                     resource: "vaultkeeps",
                     endpoint: `vaults/${this.activeVault.id}/keeps/${id}`,
-                    data:{},
-                    action:"getAll",
+                    data: {},
+                    action: "getAll",
                     resource2: "vaultkeeps",
                     endpoint2: this.activeVault.id,
                     mutation2: "setVaultKeeps"
                 })
-                // this.$store.dispatch('getVaultKeeps',{
-                //     resource: "vaultkeeps",
-                //     endpoint: this.activeVault.id,
-                //     data:{},
-                //     mutation:"setVaultKeeps"
-                // })
             },
             deleteVault() {
                 this.$store.dispatch('delete', {
                     resource: "vaults",
                     endpoint: this.activeVault.id,
-                    data:{}, 
+                    data: {},
                     action: "getAll",
                     resource2: "vaults/users",
                     endpoint2: this.activeUser.id,
-                    mutation2: "setVaults"    
+                    mutation2: "setVaults"
                 })
-                // this.$store.dispatch('getAll',{
-                //     resource: "vaults/users",
-                //     endpoint: this.activeUser.id,
-                //     data:{},
-                //     mutation: "setVaults"
-                // })
                 router.push({ path: '/profile/' + this.activeUser.id })
             },
             editVault() {
@@ -302,8 +306,8 @@
                 this.$store.dispatch('getOne', {
                     resource: "vaults",
                     endpoint: this.$route.params.id,
-                    data:{},
-                    mutation:"setActiveVault"
+                    data: {},
+                    mutation: "setActiveVault"
                 })
                 this.vault = {
                     name: this.activeVault.name,
@@ -315,19 +319,24 @@
 </script>
 
 <style>
+    .keep-div {
+        height: 600px;
+    }
+
     #keep-view .modal-content {
-    background-color: rgb(49, 73, 68);
-    color: white;
-  }
+        background-color: rgb(49, 73, 68);
+        color: white;
+    }
 
-  #share .modal-content {
-    background-color: rgb(49, 73, 68);
-    color: white;
-  }
+    #share .modal-content {
+        background-color: rgb(49, 73, 68);
+        color: white;
+    }
 
-  .close-btn {
-    background-color: rgba(140, 140, 153, 0.801)
-  }
+    .close-btn {
+        background-color: rgba(140, 140, 153, 0.801)
+    }
+
     .share-btn {
         margin-bottom: 10em;
         background-color: rgba(140, 140, 153, 0.801);
@@ -343,6 +352,7 @@
         margin-bottom: 10em;
         background-color: rgba(233, 150, 122, 0.493);
     }
+
     .share-btn-2 {
         background-color: rgba(140, 140, 153, 0.801);
         color: rgba(245, 245, 245, 0.445);
@@ -350,10 +360,18 @@
 
     .eye-btn-2 {
         background-color: rgba(134, 226, 233, 0.521);
+        width: 15%;
+        height: 30px;
+        padding-top: 8px;
+        border-radius: 5px;
     }
 
-    .delete-btn-2 { 
+    .check-2 {
         background-color: rgba(233, 150, 122, 0.493);
+        width: 15%;
+        height: 30px;
+        padding-top: 8px;
+        border-radius: 5px;
     }
 
     .edit-vault-btn {
@@ -385,6 +403,29 @@
         .container {
             display: block;
             width: 100%;
+        }
+        .keep-div {
+            height: 400px;
+        }
+        .title {
+            font-size: 1em;
+        }
+        /* .bottom-buttons button {
+            width: 35px;
+        }
+        .bottom-buttons i {
+            margin-left: -10px;
+            font-size: 1em;
+        } */
+        .content-details button {
+            margin-bottom: 20px
+        }
+        /* .content-details i {
+            margin-left: -6px;
+            font-size: 1em
+        } */
+        .vault-btn-name {
+            width: 100%
         }
     }
 
@@ -429,6 +470,7 @@
 
     .content-image {
         width: 100%;
+        max-height: 500px;
     }
 
     .content-details {
