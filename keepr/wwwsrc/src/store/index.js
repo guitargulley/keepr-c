@@ -115,16 +115,6 @@ var store = new Vuex.Store({
                     dispatch('authenticate')
                 })
         },
-        // findKeeps({ commit, dispatch }, payload) {
-            
-        //     api(payload.resource + "/search/" + payload.data, payload.data)
-        //         .then(res => {
-        //             commit('setKeeps', res.data)
-        //         })
-        //         .catch(err => {
-        //             commit('handleError', err)
-        //         })
-        // },
         // CONDENSED ROUTES
         create({ commit, dispatch }, payload) {
             api.post(`${payload.resource}/${payload.endpoint}`, payload.data)
