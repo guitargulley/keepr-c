@@ -63,13 +63,13 @@ var store = new Vuex.Store({
         resetState(state, data) {
             state.error = {},
                 state.activeUser = {},
-                state.keeps = [],
                 state.activeKeep = {},
                 state.userKeeps = [],
                 state.userVaults = [],
                 state.activeVault = {},
                 state.vaultKeeps = []
-        }
+                router.push({ name: 'Home' })
+        },
     },
     actions: {
         //LOGIN
@@ -113,7 +113,6 @@ var store = new Vuex.Store({
                     commit('setUser', user)
                     commit('resetState')
                     dispatch('authenticate')
-                    router.push({ name: 'Home' })
                 })
         },
         findKeeps({ commit, dispatch }, payload) {
