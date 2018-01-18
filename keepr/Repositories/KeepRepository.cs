@@ -59,18 +59,25 @@ namespace keepr.Repositories
             }
             return _db.Query<Keep>(output);
         }
+
+        internal IEnumerable<Keep> GetAllByCategory(string query)
+        {
+            return _db.Query<Keep>($"SELECT * FROM keeps WHERE category = '{query}'");
+        }
+
         //CREATE NEW KEEP
         public Keep Add(Keep keep)
         {
-            int id = _db.ExecuteScalar<int>("INSERT INTO keeps (Name, ImageUrl, UserId, KeepCount, Viewed, Public)"
-                        + " VALUES(@Name, @ImageUrl, @UserId, @KeepCount, @Viewed, @Public); SELECT LAST_INSERT_ID()", new
+            int id = _db.ExecuteScalar<int>("INSERT INTO keeps (Name, ImageUrl, UserId, KeepCount, Viewed, Public, Category)"
+                        + " VALUES(@Name, @ImageUrl, @UserId, @KeepCount, @Viewed, @Public, @Category); SELECT LAST_INSERT_ID()", new
                         {
                             keep.Name,
                             keep.ImageUrl,
                             keep.UserId,
                             keep.KeepCount,
                             keep.Viewed,
-                            keep.Public
+                            keep.Public,
+                            keep.Category
                         });
             keep.Id = id;
             return keep;
@@ -85,7 +92,8 @@ namespace keepr.Repositories
                     UserId = @UserId, 
                     KeepCount = @KeepCount, 
                     Viewed = @Viewed, 
-                    Public = @Public
+                    Public = @Public,
+                    Category = @Category
                 WHERE id = {id};
                 SELECT * FROM keeps WHERE id = {id};", keep);
         }

@@ -160,6 +160,15 @@
           <form id="search-keeps" class="form-inline" @submit.prevent="findKeepsBy">
             <div class="search-form-group" style=" margin-bottom:10px;">
               <input type="text" name="text" class="form-control search" placeholder="Find a Keep" v-model="search">
+              <label></label>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {{searchCategory}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu"  >
+                          <li v-for="c in categories"><a @click="findByCategory(c)" :name="c":value="c">{{c}}</a></li>
+                        </ul>
+                      </div>
               <button class="btn btn-submit search-btn" title="Search" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
@@ -195,13 +204,13 @@
                   <i class="fa fa-check fa-2x" title="Add Keep To A Vault" data-toggle="modal" data-target="#login" aria-hidden="true"></i>
                 </button>
               </div>
-            </div>
-          </div>
-          <div class="bottom-buttons">
-            <h2 class="title text-responsive">{{keep.name}}</h2>
-            <div class="bottom-buttons-position">
-              <i class="fa fa-eye eye-2" title="View Keep" aria-hidden="true"  >:{{keep.viewed}}</i>
-              <i class="fa fa-check check-2" title="Add Keep To A Vault"  aria-hidden="true">:{{keep.keepCount}}</i>
+              <div class="bottom-buttons">
+                <h2 class="title text-responsive">{{keep.name}}</h2>
+                <div class="bottom-buttons-position">
+                  <i class="fa fa-eye eye-2" title="View Keep" aria-hidden="true"  >:{{keep.viewed}}</i>
+                  <i class="fa fa-check check-2" title="Add Keep To A Vault"  aria-hidden="true">:{{keep.keepCount}}</i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -219,7 +228,8 @@
           email: '',
           password: ''
         },
-        search: ''
+        search: '',
+        searchCategory: "Category"
       }
     },
     components: {
@@ -247,6 +257,9 @@
       },
       activeKeep() {
         return this.$store.state.activeKeep
+      },
+      categories(){
+        return this.$store.state.categories
       }
     },
     methods: {
@@ -259,7 +272,12 @@
       },
       findKeepsBy() {
         if (this.search != "") {
-          this.$store.dispatch('findKeeps', { resource: "keeps", data: this.search })
+          this.$store.dispatch('getAll', { 
+            resource: "keeps",
+            endpoint: `search/${this.search}`,
+            data:{},
+            mutation: "setKeeps"
+          })
         }
         else {
           this.$store.dispatch('getAll', {
@@ -269,6 +287,17 @@
             mutation: "setKeeps"
           })
         }
+        this.searchCategory = "Category"
+      },
+      findByCategory(c){
+        this.$store.dispatch('getAll',{
+          resource: "keeps",
+          endpoint: `categories/${c.toLowerCase()}`,
+          data:{},
+          mutation: "setKeeps"
+        })
+        this.searchCategory = c
+        this.search = ""
       },
       getKeeps() {
         this.$store.dispatch('getAll', {
@@ -318,7 +347,6 @@
         })
       },
       updateKeepViews(keep) {
-        debugger
         keep.viewed++
         var updatedKeep = {
           name: keep.name,
@@ -347,7 +375,9 @@
   .search {
     width: 50%;
   }
-
+  .modal img{
+    max-width: 250px;
+  }
   .title-page-header {
     text-shadow: 0px 0px 1px black;
     color: white;
@@ -356,7 +386,7 @@
   }
 
   .keep-div {
-    height: 600px;
+    height: 650px;
   }
 
   #keep-view .modal-content {
@@ -392,18 +422,18 @@
   }
 
   .share-btn {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(140, 140, 153, 0.801);
     color: rgba(245, 245, 245, 0.445);
   }
 
   .eye {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(134, 226, 233, 0.521)
   }
 
   .check {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(233, 150, 122, 0.493)
   }
   
@@ -513,7 +543,8 @@
 
   .content-image {
     width: 100%;
-    max-height: 500px;
+    max-height: 400px;
+    min-height: 200px;
   }
 
   .content-details {

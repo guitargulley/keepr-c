@@ -13,5 +13,6 @@ namespace keepr.Models
         public int KeepCount { get; set; }
         public int Viewed { get; set; }
         public bool Public { get; set; }
+        public string Category {get; set;}
     }
 }

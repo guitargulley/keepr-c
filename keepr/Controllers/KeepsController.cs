@@ -46,6 +46,11 @@ namespace keepr.Controllers
         {
             return db.GetAllBySearch(query);
         }
+        [HttpGet("categories/{query}")]
+        public IEnumerable<Keep> GetByCategory(string query)
+        {
+            return db.GetAllByCategory(query);
+        }
         //GET BY KEEP ID
         [HttpGet("{id}")]
         public Keep Get(int id)

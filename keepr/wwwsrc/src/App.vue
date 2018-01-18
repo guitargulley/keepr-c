@@ -131,7 +131,6 @@
         }
       },
       submitRegister() {
-        debugger
         if (this.signUp.password == this.signUp.rPassword) {
           this.$store.dispatch('register', {
             username: this.signUp.userName,

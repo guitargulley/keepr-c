@@ -160,7 +160,7 @@
                         <div class="content-overlay"></div>
                         <img class="content-image image-responsive" :src="keep.imageUrl" alt="">
                         <div class="content-details fadeIn-bottom">
-                            <button class="btn eye-btn" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view" >
+                            <button class="btn eye-btn" @click="updateKeepViews(keep)" data-toggle="modal" data-target="#keep-view">
                                 <i class="fa fa-eye fa-2x" title="View Keep" aria-hidden="true"></i>
                             </button>
                             <button class="btn delete-btn" title="Remove from Vault" @click="removeKeep(keep.id)">
@@ -170,13 +170,13 @@
                                 <i class="fa fa-share-alt fa-2x" title="Share Keep" aria-hidden="true"></i>
                             </button>
                         </div>
-                    </div>
-                </div>
-                <div class="text-center bottom-buttons">
-                    <h2 class="title">{{keep.name}}</h2>
-                    <div>
-                        <i class="fa fa-eye eye-btn-2" title="View Keep" aria-hidden="true">: {{keep.viewed}}</i>
-                        <i class="fa fa-check check-2" title="Add Keep To A Vault" aria-hidden="true">:{{keep.keepCount}}</i>
+                        <div class="text-center bottom-buttons">
+                            <h2 class="title">{{keep.name}}</h2>
+                            <div>
+                                <i class="fa fa-eye eye-btn-2" title="View Keep" aria-hidden="true">: {{keep.viewed}}</i>
+                                <i class="fa fa-check check-2" title="Add Keep To A Vault" aria-hidden="true">:{{keep.keepCount}}</i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,7 +243,7 @@
                 })
             },
             updateKeepViews(keep) {
-                debugger
+
                 keep.viewed++
                 var updatedKeep = {
                     name: keep.name,
@@ -264,6 +264,8 @@
                 })
             },
             removeKeep(id) {
+                var keep = this.activeKeep
+                keep.keepCount--
                 this.$store.dispatch('delete', {
                     resource: "vaultkeeps",
                     endpoint: `vaults/${this.activeVault.id}/keeps/${id}`,
@@ -272,6 +274,15 @@
                     resource2: "vaultkeeps",
                     endpoint2: this.activeVault.id,
                     mutation2: "setVaultKeeps"
+                })
+                this.$store.dispatch('update', {
+                    resource: "keeps",
+                    endpoint: keep.id,
+                    data: keep,
+                    action: "getAll",
+                    resource2: "keeps",
+                    endpoint2: "",
+                    mutation2: "setKeeps"
                 })
             },
             deleteVault() {
@@ -320,7 +331,7 @@
 
 <style>
     .keep-div {
-        height: 600px;
+        height: 650px;
     }
 
     #keep-view .modal-content {
@@ -338,18 +349,18 @@
     }
 
     .share-btn {
-        margin-bottom: 10em;
+        margin-bottom: 8em;
         background-color: rgba(140, 140, 153, 0.801);
         color: rgba(245, 245, 245, 0.445);
     }
 
     .eye-btn {
-        margin-bottom: 10em;
+        margin-bottom: 8em;
         background-color: rgba(134, 226, 233, 0.521);
     }
 
     .delete-btn {
-        margin-bottom: 10em;
+        margin-bottom: 8em;
         background-color: rgba(233, 150, 122, 0.493);
     }
 

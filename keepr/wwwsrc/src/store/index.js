@@ -28,7 +28,8 @@ var store = new Vuex.Store({
         userKeeps: [],
         userVaults: [],
         activeVault: {},
-        vaultKeeps: []
+        vaultKeeps: [],
+        categories:["Food", "Funny", "Animals", "Tattoos", "Cars", "Wedding", "Decorations", "DIY"]
     },
     mutations: {
         handleError(state, err) {
@@ -39,7 +40,6 @@ var store = new Vuex.Store({
             state.activeUser = user
         },
         setKeeps(state, data) {
-            debugger
             console.log('all keeps:', data)
             state.keeps = data
             console.log(state.keeps)
@@ -115,16 +115,16 @@ var store = new Vuex.Store({
                     dispatch('authenticate')
                 })
         },
-        findKeeps({ commit, dispatch }, payload) {
-            debugger
-            api(payload.resource + "/search/" + payload.data, payload.data)
-                .then(res => {
-                    commit('setKeeps', res.data)
-                })
-                .catch(err => {
-                    commit('handleError', err)
-                })
-        },
+        // findKeeps({ commit, dispatch }, payload) {
+            
+        //     api(payload.resource + "/search/" + payload.data, payload.data)
+        //         .then(res => {
+        //             commit('setKeeps', res.data)
+        //         })
+        //         .catch(err => {
+        //             commit('handleError', err)
+        //         })
+        // },
         // CONDENSED ROUTES
         create({ commit, dispatch }, payload) {
             api.post(`${payload.resource}/${payload.endpoint}`, payload.data)

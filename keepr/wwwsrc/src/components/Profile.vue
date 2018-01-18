@@ -80,8 +80,19 @@
                 <input type="text" name="imageurl" maxlength="255" class="form-control" placeholder="imageurl" required v-model='newKeep.imageUrl'>
               </div>
               <div class="form-group">
+                  <label for="category">CATEGORY:</label>
+                      <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            {{category}} <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" >
+                            <li  v-for= "c in categories" require ><a @click="changeCategory(c)" :name="c":value="c">{{c}}</a></li>
+                          </ul>
+                        </div>
+                </div>
+              <div class="form-group">
                 <label>
-                  <input type="checkbox" value="true" required v-model='newKeep.public'>MAKE PUBLIC</label>
+                  <input type="checkbox" value="true" v-model='newKeep.public'>MAKE PUBLIC</label>
               </div>
               <div class="form-group">
                 <button class="btn btn-submit btn-success" @click="createKeep" data-dismiss="modal" type="submit">Submit</button>
@@ -137,10 +148,17 @@
                 <label for="imageUrl">Image URL:</label>
                 <textarea type="text" name="imageurl" maxlength="255" class="form-control" placeholder="imageurl" required v-model='newKeep.imageUrl'>{{newKeep.imageUrl}}</textarea>
               </div>
-              <div class="form-group">
-                <label>
-                  <input type="checkbox" value="true" required v-model='newKeep.public'>MAKE PUBLIC</label>
-              </div>
+                <label>CATEGORY:</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-model="newKeep.category">
+                          {{category}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu"  >
+                          <li v-for="c in categories"><a @click="changeCategory(c)" :name="c":value="c">{{c}}</a></li>
+                        </ul>
+                      </div>
+                    
+              
               <div class="form-group">
                 <button class="btn btn-submit btn-success" @click="editKeep" data-dismiss="modal" type="submit">Save Changes</button>
                 <button class="btn btn-submit btn-danger" @click="deleteKeep(activeKeep.id)" data-dismiss="modal" type="submit">Delete Keep</button>
@@ -238,13 +256,13 @@
                     <i class="fa fa-eye" title="View Keep" @mouseover="setActiveKeep(keep)" @click="updateKeepViews(keep)"data-toggle="modal" data-target="#keep-view" aria-hidden="true"></i>
                   </button>
                 </div>
-              </div>
-            </div>
-            <div>
-              <h2 class="title bottom-buttons">{{keep.name}}</h2>
-              <div>
-                  <i class="fa fa-eye eye-btn-2" title="View Keep" aria-hidden="true">: {{keep.viewed}}</i>
-                  <i class="fa fa-check check-2" title="Add Keep To A Vault"  aria-hidden="true">:{{keep.keepCount}}</i>
+                <div>
+                  <h2 class="title bottom-buttons">{{keep.name}}</h2>
+                  <div>
+                      <i class="fa fa-eye eye-btn-2" title="View Keep" aria-hidden="true">: {{keep.viewed}}</i>
+                      <i class="fa fa-check check-2" title="Add Keep To A Vault"  aria-hidden="true">:{{keep.keepCount}}</i>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -268,8 +286,9 @@
           name: '',
           imageUrl: '',
           public: false,
-        }
-
+          category: this.category  
+        },
+        category:""
       }
     },
     mounted() {
@@ -299,14 +318,22 @@
       },
       activeKeep() {
         return this.$store.state.activeKeep
+      },
+      categories(){
+        return this.$store.state.categories
       }
     },
     methods: {
+      changeCategory(c){
+       this.category = c
+       this.newKeep.category = c.toLowerCase()
+      },
       resetVmodel() {
         this.newKeep = {
           name: "",
           imageUrl: "",
-          public: false
+          public: false,
+          category:""
         }
       },
       createKeep() {
@@ -327,7 +354,6 @@
         }
       },
       updateKeepViews(keep) {
-        debugger
         keep.viewed++
         var updatedKeep = {
           name: keep.name,
@@ -335,7 +361,8 @@
           userId: keep.userId,
           keepCount: keep.keepCount,
           viewed: keep.viewed,
-          public: keep.public
+          public: keep.public,
+          category: keep.category
         }
         this.$store.dispatch('update', {
           resource: "keeps",
@@ -404,6 +431,7 @@
           mutation: 'setActiveKeep'
         })
         this.newKeep = keep
+        this.category = keep.category
       },
       editKeep() {
         this.newKeep.id = this.activeKeep.id
@@ -428,6 +456,7 @@
           endpoint2: `users/${this.activeUser.id}`,
           mutation2: "setUserKeeps"
         })
+
       }
     }
   }
@@ -443,21 +472,21 @@
     background-color: rgba(140, 140, 153, 0.801)
   }
   .keep-div {
-    height: 600px;
+    height: 650px;
   }
   .edit-btn {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(140, 140, 153, 0.801);
     color: rgba(245, 245, 245, 0.445);
   }
 
   .eye-btn {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(134, 226, 233, 0.521);
   }
 
   .delete-btn {
-    margin-bottom: 10em;
+    margin-bottom: 8em;
     background-color: rgba(233, 150, 122, 0.493);
   }
 
